@@ -5,6 +5,7 @@ import { todayWeekday } from './weekTaskConfig';
 import CategoryScoreBar from './CategoryScoreBar';
 import TaskItem from './TaskItem';
 import AddTaskModal from './AddTaskModal';
+import { useViewMode } from '../../context/ViewModeContext';
 
 const CAT_COLORS = {
   '生活': 'text-red-400/60',
@@ -97,6 +98,9 @@ export default function WeekTaskPanel({
     } catch { toast.error('操作失败'); }
   };
 
+  const { viewMode } = useViewMode();
+  const isMobile = viewMode === 'mobile';
+
   return (
     <>
     <div className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
@@ -112,9 +116,9 @@ export default function WeekTaskPanel({
         <CategoryScoreBar categoryScores={categoryScores} />
       </div>
 
-      <div className="grid grid-cols-7 gap-2">
+      <div className={isMobile ? 'flex gap-2 overflow-x-auto pb-2 -mx-1 px-1' : 'grid grid-cols-7 gap-2'}>
         {WEEKDAYS.map((name, i) => (
-          <div key={i} className="flex flex-col min-h-0">
+          <div key={i} className={isMobile ? 'flex flex-col shrink-0 w-[120px]' : 'flex flex-col min-h-0'}>
             <div
               className={`text-center text-xs font-medium py-1.5 mb-2 tracking-wide rounded-lg transition-colors ${
                 i === today
@@ -125,7 +129,7 @@ export default function WeekTaskPanel({
               {name}
             </div>
 
-            <div className="space-y-1 flex-1">
+            <div className={isMobile ? 'space-y-1.5 flex-1' : 'space-y-1 flex-1'}>
               {(tasksByDay[i] || []).map(task => (
                 <TaskItem
                   key={task.id}
@@ -133,6 +137,7 @@ export default function WeekTaskPanel({
                   onToggle={handleToggle(task)}
                   onUpdate={handleUpdate(task)}
                   onDelete={handleDelete(task)}
+                  mobile={isMobile}
                 />
               ))}
             </div>

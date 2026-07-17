@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import BadgeSVG from './BadgeSVG';
+import { useViewMode } from '../../context/ViewModeContext';
 
 const TIER_LABELS = {
   common: '铜',
@@ -25,6 +26,8 @@ const CAT_COLORS = {
 
 export default function BadgeGrid({ achievements, loading, equippedBadgeId, onEquip }) {
   const [equipping, setEquipping] = useState(null);
+  const { viewMode } = useViewMode();
+  const isMobile = viewMode === 'mobile';
 
   // Group by tier
   const tiers = { legendary: [], epic: [], rare: [], common: [] };
@@ -34,9 +37,9 @@ export default function BadgeGrid({ achievements, loading, equippedBadgeId, onEq
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className={`grid ${isMobile ? 'grid-cols-3 gap-2' : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4'}`}>
         {[1, 2, 3, 4, 5, 6].map(i => (
-          <div key={i} className="h-44 bg-white/[0.03] rounded-2xl animate-pulse border border-white/[0.05]" />
+          <div key={i} className={`${isMobile ? 'h-28' : 'h-44'} bg-white/[0.03] rounded-2xl animate-pulse border border-white/[0.05]`} />
         ))}
       </div>
     );
@@ -73,16 +76,18 @@ export default function BadgeGrid({ achievements, loading, equippedBadgeId, onEq
               <div className="flex-1 h-px bg-gradient-to-r from-white/[0.04] to-transparent" />
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className={`grid ${isMobile ? 'grid-cols-3 gap-2' : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3'}`}>
               {list.map(ach => {
                 const isEquipped = equippedBadgeId === ach.id;
                 const catColor = CAT_COLORS[ach.category] || '#00e5ff';
+                const badgeSize = isMobile ? 36 : 52;
+                const padding = isMobile ? 'p-2.5' : 'p-4';
 
                 return (
                   <div
                     key={ach.id}
                     onClick={() => handleEquip(ach)}
-                    className={`relative rounded-2xl border p-4 text-center transition-all duration-300 cursor-pointer group ${
+                    className={`relative rounded-2xl border ${padding} text-center transition-all duration-300 cursor-pointer group ${
                       ach.unlocked
                         ? isEquipped
                           ? `backdrop-blur-xl bg-white/[0.05] border-cyan-400/40 shadow-[0_0_20px_rgba(0,229,255,0.1)]`
@@ -92,12 +97,12 @@ export default function BadgeGrid({ achievements, loading, equippedBadgeId, onEq
                   >
                     {/* Category dot */}
                     {ach.unlocked && (
-                      <span className="absolute top-3 left-3 w-2 h-2 rounded-full" style={{ backgroundColor: catColor }} />
+                      <span className={`absolute top-2 left-2 w-1.5 h-1.5 rounded-full ${isMobile ? 'w-1.5 h-1.5 top-1.5 left-1.5' : 'top-3 left-3 w-2 h-2'}`} style={{ backgroundColor: catColor }} />
                     )}
 
                     {/* Equipped indicator */}
                     {isEquipped && (
-                      <span className="absolute top-3 right-3 text-[9px] text-cyan-400 font-mono tracking-wider">
+                      <span className={`absolute top-3 right-3 text-[9px] text-cyan-400 font-mono tracking-wider ${isMobile ? 'top-1.5 right-1.5 text-[8px]' : 'top-3 right-3'}`}>
                         佩戴中
                       </span>
                     )}
@@ -108,21 +113,23 @@ export default function BadgeGrid({ achievements, loading, equippedBadgeId, onEq
                         shape={ach.shape || 'hex'}
                         tier={ach.tier || 'common'}
                         unlocked={ach.unlocked}
-                        size={52}
+                        size={badgeSize}
                       />
                     </div>
 
                     {/* Name */}
-                    <div className={`text-sm font-semibold tracking-wide mt-2.5 ${
+                    <div className={`font-semibold tracking-wide ${isMobile ? 'text-[11px] mt-1.5' : 'text-sm mt-2.5'} ${
                       ach.unlocked ? 'text-white/70' : 'text-slate-700'
                     }`}>
-                      {ach.name_zh}
+                      {isMobile ? ach.name_zh.slice(0, 4) : ach.name_zh}
                     </div>
 
                     {/* Description */}
-                    <div className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
-                      {ach.description_zh}
-                    </div>
+                    {!isMobile && (
+                      <div className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
+                        {ach.description_zh}
+                      </div>
+                    )}
 
                     {/* EXP reward */}
                     <div className="text-[10px] text-slate-700 mt-1.5">

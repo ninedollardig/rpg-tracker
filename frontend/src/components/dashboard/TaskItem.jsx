@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { catClass } from './weekTaskConfig';
 
-export default function TaskItem({ task, onToggle, onUpdate, onDelete }) {
+export default function TaskItem({ task, onToggle, onUpdate, onDelete, mobile }) {
   const [editingScore, setEditingScore] = useState(false);
   const [editingContent, setEditingContent] = useState(false);
   const [editContent, setEditContent] = useState('');
@@ -55,8 +55,10 @@ export default function TaskItem({ task, onToggle, onUpdate, onDelete }) {
         />
       ) : (
         <span
-          className={`flex-1 cursor-pointer hover:text-cyan-400 truncate transition-colors ${
-            task.completed ? 'text-slate-600 line-through' : 'text-white/60'
+          className={`flex-1 cursor-pointer hover:text-cyan-400 transition-colors ${
+            mobile ? 'text-white/70 text-[11px] whitespace-normal break-words leading-tight' : 'truncate'
+          } ${
+            task.completed ? 'text-slate-600 line-through' : ''
           }`}
           onClick={() => {
             setEditingContent(true);
