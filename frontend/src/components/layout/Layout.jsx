@@ -111,21 +111,6 @@ export default function Layout({ children }) {
       <div className="flex h-screen overflow-hidden bg-[#030308] justify-center items-start py-4">
         {/* Phone frame */}
         <div className="w-full max-w-[430px] h-full max-h-[920px] rounded-[2.5rem] border border-white/[0.06] bg-[#060610] shadow-[0_0_80px_rgba(0,0,0,0.6),0_0_0_2px_rgba(255,255,255,0.03)] overflow-hidden flex flex-col">
-          {/* Top bar: notch + exit */}
-          <div className="shrink-0 flex items-center justify-between pt-3 pb-1 px-4">
-            <div className="w-8" />
-            <div className="w-32 h-6 bg-black rounded-full flex items-center justify-center gap-1.5">
-              <div className="w-2 h-2 rounded-full bg-[#0a0a14] ring-1 ring-cyan-500/15" />
-            </div>
-            <button
-              onClick={toggleViewMode}
-              title="退出手机模式"
-              className="w-8 h-8 flex items-center justify-center rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] hover:border-cyan-500/20 transition-all group"
-            >
-              <Monitor size={14} className="text-slate-500 group-hover:text-cyan-400 group-hover:drop-shadow-[0_0_6px_rgba(0,229,255,0.5)] transition-all" />
-            </button>
-          </div>
-
           {/* Content area */}
           <div className="flex-1 overflow-y-auto">
             {showHome ? (
@@ -150,9 +135,18 @@ export default function Layout({ children }) {
             )}
           </div>
 
-          {/* Home indicator */}
-          <div className="shrink-0 flex justify-center pb-3 pt-2">
-            <div className="w-36 h-1.5 bg-white/[0.06] rounded-full" />
+          {/* Bottom bar: exit button + home indicator */}
+          <div className="shrink-0 border-t border-white/[0.04] px-4 py-3 space-y-3">
+            <button
+              onClick={toggleViewMode}
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-cyan-500/8 border border-cyan-500/15 text-sm text-cyan-400 hover:bg-cyan-500/15 hover:border-cyan-500/25 hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] transition-all group"
+            >
+              <Monitor size={16} className="group-hover:drop-shadow-[0_0_8px_rgba(0,229,255,0.6)] transition-all" />
+              <span>退出手机模式</span>
+            </button>
+            <div className="flex justify-center">
+              <div className="w-36 h-1.5 bg-white/[0.06] rounded-full" />
+            </div>
           </div>
         </div>
       </div>
