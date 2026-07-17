@@ -146,14 +146,46 @@ export default function ProfilePage() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            {[
-              { id: 'deepseek-chat', label: 'DeepSeek V4', desc: '通用对话' },
-              { id: 'deepseek-reasoner', label: 'DeepSeek R1', desc: '深度推理' },
-              { id: 'gpt-4o', label: 'GPT-5.5', desc: 'OpenAI' },
-              { id: 'claude-opus-4-7', label: 'Claude Opus 4.7', desc: 'Anthropic' },
-              { id: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6', desc: 'Anthropic' },
-            ].map(m => (
+          <p className="text-[10px] text-slate-600 font-mono tracking-wider uppercase">🌍 海外</p>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { id: 'gpt-5.5', label: 'GPT-5.5', desc: 'OpenAI' },
+                { id: 'claude-opus-4-8', label: 'Claude 4.8 Opus', desc: 'Anthropic' },
+                { id: 'gemini-3.1-pro', label: 'Gemini 3.1 Pro', desc: 'Google' },
+                { id: 'deepseek-chat', label: 'DeepSeek V4', desc: 'DeepSeek' },
+                { id: 'llama-4', label: 'Llama 4', desc: 'Meta' },
+              ].map(m => (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => handleModelChange(m.id)}
+                  className={`text-left px-4 py-3 rounded-xl border transition-all duration-200 ${
+                    modelName === m.id
+                      ? 'border-cyan-500/20 bg-cyan-500/[0.06] shadow-[0_0_12px_rgba(0,229,255,0.08)]'
+                      : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12] hover:bg-white/[0.04]'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className={`text-sm font-semibold ${
+                      modelName === m.id ? 'text-cyan-400' : 'text-slate-300'
+                    }`}>
+                      {m.label}
+                    </span>
+                    {modelName === m.id && <Check size={14} className="text-cyan-400" />}
+                  </div>
+                  <span className="text-[11px] text-slate-600 mt-0.5 block">{m.desc}</span>
+                </button>
+              ))}
+            </div>
+            <p className="text-[10px] text-slate-600 font-mono tracking-wider uppercase">🇨🇳 国内</p>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { id: 'qwen3.5-max', label: 'Qwen3.5 Max', desc: '通义千问' },
+                { id: 'ernie-bot-4.0', label: 'ERNIE Bot 4.0', desc: '文心一言' },
+                { id: 'kimi-k3', label: 'Kimi K3', desc: '月之暗面' },
+                { id: 'hunyuan-hy3', label: '腾讯混元Hy3', desc: '腾讯' },
+                { id: 'doubao', label: '豆包Doubao', desc: '字节跳动' },
+              ].map(m => (
               <button
                 key={m.id}
                 type="button"
@@ -178,7 +210,7 @@ export default function ProfilePage() {
           </div>
 
           <p className="text-[11px] text-slate-600">
-            设置后庶务外包和雷达生成将使用你的 Key。不填则使用系统默认。
+            设置后庶务外包、日报生成、雷达生成将使用你的 Key。未设置则 AI 功能不可用。
           </p>
         </div>
       </div>
