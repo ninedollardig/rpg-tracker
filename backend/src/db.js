@@ -15,7 +15,7 @@ export async function getDb() {
   if (db) return db;
 
   const SQL = await initSqlJs({
-    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.11.0/${file}`
+    locateFile: file => join(__dirname, '..', 'data', file)
   });
 
   // Vercel: try /tmp first (previous warm invocation), fall back to bundled db
