@@ -1,6 +1,80 @@
 # RPG Tracker 项目日志
 
-## 2026-06-23 — docx 上传中文显示为 HTML 实体
+## 2026-07-18 — 密钥泄露事故
+
+### 事故经过
+- Vercel 部署时把 `DEEPSEEK_API_KEY` 设为环境变量，导致任何用户不填自己的 Key 也能用系统 Key 调用 AI，消耗账户余额
+- **暴露时间**：约 2 小时
+- **影响范围**：Vercel production + preview 环境
+- **修复**：
+  - `vercel env rm DEEPSEEK_API_KEY production/preview` 立即删除
+  - 本地 `.env` 中删除该 Key
+  - 全局记忆沉淀 [deployment_key_audit](../../../memory/deployment_key_audit.md)：「部署前必须审计平台环境变量，绝不在公开部署中设系统默认 API Key」
+- **教训**：`.env` gitignored ≠ 安全。部署平台环境变量是新的泄露面
+
+### 模型列表重构
+- 「我的」页面模型选择从 5 个旧列表替换为 10 个新模型（海外 5 + 国内 5）
+- 删除"不填则使用系统默认"的提示，改为"未设置则 AI 功能不可用"
+- 删除国旗 emoji
+
+### 庶务外包手机版布局修复
+- 7 步问卷卡片从 2 列网格 → 横向可滑动列表（每张 130px 宽）
+- 结果卡片头部从并排 → 上下堆叠，推送按钮全宽
+- 整体内边距缩减
+
+---
+
+## 2026-07-17 — Vercel 部署 + 手机模式 + 新手指引
+
+### Vercel 部署（sql.js WASM 四轮修复）
+- **第一次**：`ENOENT: sql-wasm.wasm` — Vercel 自动裁剪 node_modules 中的 `.wasm` 文件
+- **第二次**：CDN URL → sql.js `locateFile` 只接受本地路径，不支持 URL fetch
+- **第三次**：手动下载的 WASM 文件与 node_modules 的 JS wrapper 版本不匹配 → `TypeError: y is not a function at onRuntimeInitialized`
+- **第四次（成功）**：从 `backend/node_modules/sql.js/dist/sql-wasm.wasm` 复制匹配的 WASM 到 `backend/data/`，commit 到 Git（653KB），`locateFile` 指向本地路径
+- **部署配置**：root `package.json` + `vercel.json`（`includeFiles: "backend/**"` + rewrites）+ `api/index.js` 作为 serverless handler + `/tmp` 读写数据库
+- **冷启动耗时**：~3 秒（加载 660KB WASM），热调用正常
+
+### AddTaskModal z-index 修复
+- **现象**：添加任务弹窗卡在每日任务卡片下面，看不见
+- **根因**：`backdrop-blur` 创建新 stacking context，`z-index` 在内部无意义
+- **修复**：`createPortal` 渲染到 `document.body`，彻底绕过父容器 stacking context
+- 新增分类未选择时的提示文字：「请先选择一个分类，再点击添加」
+- 禁用态 opacity 从 0.3 提高到 0.5
+
+### 手机/桌面界面切换
+- 侧边栏底部新增切换按钮（带滑动开关动画）
+- **桌面模式**：正常侧边栏 + 内容区
+- **手机模式**：
+  - 侧边栏隐藏，主区域显示 430px 宽手机框
+  - 默认显示导航主页（9 宫格菜单 + 角色统计）
+  - 点击功能进入对应页面，左上角发光青色返回键
+  - 底部 home indicator 条
+  - 首页底部显示「退出手机模式」按钮（其他页面不显示）
+- 选择持久化到 localStorage
+
+### 手机版组件适配
+- **本周修炼**：7 天从挤在一起的 7 列 → 横向可滑动，每列 120px 宽，任务名完整显示不截断
+- **成就徽章**：手机模式 3 列紧凑排列，徽章 SVG 从 52px 缩小到 36px，隐藏描述文字
+- **新手指引导航主页**：每项下方标注一行说明文字
+
+### 侧边栏悬浮提示重构
+- **旧方案**：每个 NavLink 内嵌 `group-hover` 绝对定位 tooltip，被侧边栏边界裁剪，滚动条冗余
+- **新方案**：`FloatingTooltip` 组件，通过 React Portal 渲染到 `document.body`
+  - 半透明毛玻璃样式（`backdrop-blur: 16px`）
+  - 跟随鼠标移动，300ms 延迟避免闪烁
+  - 不受侧边栏 overflow/z-index 限制
+
+### 新手指引独立页面
+- 新增 `/guide` 路由 + GuidePage + 侧边栏入口
+- 涵盖全部 9 个功能，每项展开后分四区：📥 输入 → ⚙️ 逻辑 → 📤 输出 → 💡 例子
+- 例子可点 ✕ 关闭
+- 「我的」页面中原有简略介绍替换为跳转卡片
+
+### 侧边栏切换按钮位置调整
+- 桌面/手机切换从「总修为」下方移到上方（紧接导航区后面）
+
+---
+
 
 - **现象**：期末复习上传 .docx 文件后，中文显示为 `&#31532;&#19971;&#31456;` 等数字实体而非汉字
 - **根因**：docx 内部 XML 将部分中文编码为十进制数字字符引用（`&#dddd;`），`study.js` 的文本提取正则只剥 XML 标签，未解码实体

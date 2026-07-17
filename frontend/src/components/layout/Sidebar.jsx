@@ -123,32 +123,6 @@ export default function Sidebar() {
         </div>
       </nav>
 
-      {/* Footer stats */}
-      {character && (
-        <div className="px-5 py-4 border-t border-white/[0.05] space-y-2">
-          <div className="flex justify-between text-xs">
-            <span className="text-slate-600">总修为</span>
-            <span className="text-cyan-400 font-semibold">{character.total_exp?.toLocaleString()}</span>
-          </div>
-          <button
-            onClick={() => navigate('/')}
-            title="前往签到"
-            className="w-full flex justify-between items-center text-xs group cursor-pointer hover:bg-white/[0.02] rounded px-1 py-0.5 -mx-1 transition-colors"
-          >
-            <span className="text-slate-600 group-hover:text-slate-400 transition-colors">连续修炼</span>
-            <span className="text-violet-400 font-semibold flex items-center gap-1">
-              {streakFlame && (
-                <Flame size={streakFlame.size} className={streakFlame.className || ''} />
-              )}
-              {character.streak_days} 天
-              {streakFlame && (
-                <span className="text-[10px] text-slate-500 ml-0.5">{streakFlame.label}</span>
-              )}
-            </span>
-          </button>
-        </div>
-      )}
-
       {/* View Mode Toggle */}
       <div className="px-5 py-3 border-t border-white/[0.05]">
         <button
@@ -177,6 +151,32 @@ export default function Sidebar() {
           </div>
         </button>
       </div>
+
+      {/* Footer stats */}
+      {character && (
+        <div className="px-5 py-4 border-t border-white/[0.05] space-y-2">
+          <div className="flex justify-between text-xs">
+            <span className="text-slate-600">总修为</span>
+            <span className="text-cyan-400 font-semibold">{character.total_exp?.toLocaleString()}</span>
+          </div>
+          <button
+            onClick={() => navigate('/')}
+            title="前往签到"
+            className="w-full flex justify-between items-center text-xs group cursor-pointer hover:bg-white/[0.02] rounded px-1 py-0.5 -mx-1 transition-colors"
+          >
+            <span className="text-slate-600 group-hover:text-slate-400 transition-colors">连续修炼</span>
+            <span className="text-violet-400 font-semibold flex items-center gap-1">
+              {streakFlame && (
+                <Flame size={streakFlame.size} className={streakFlame.className || ''} />
+              )}
+              {character.streak_days} 天
+              {streakFlame && (
+                <span className="text-[10px] text-slate-500 ml-0.5">{streakFlame.label}</span>
+              )}
+            </span>
+          </button>
+        </div>
+      )}
 
       {/* Logout */}
       <button
