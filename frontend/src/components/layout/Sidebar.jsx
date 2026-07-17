@@ -3,6 +3,7 @@ import { Sword, Activity, Trophy, Target, BarChart3, LogOut, Send, User, Flame, 
 import { useCharacterContext } from '../../context/CharacterContext';
 import { useAuth } from '../../context/AuthContext';
 import { useViewMode } from '../../context/ViewModeContext';
+import { useFloatingTooltip } from '../../components/ui/FloatingTooltip';
 import { getStreakFlame } from '../../lib/streak';
 
 const navGroups = [
@@ -36,6 +37,7 @@ export default function Sidebar() {
   const { character } = useCharacterContext();
   const { logout } = useAuth();
   const { viewMode, toggleViewMode } = useViewMode();
+  const { show, move, hide, TooltipOverlay } = useFloatingTooltip();
   const navigate = useNavigate();
 
   const streakFlame = getStreakFlame(character?.streak_days || 0);
@@ -78,27 +80,21 @@ export default function Sidebar() {
           <div key={group.label} className="space-y-0.5">
             <p className="text-[10px] text-slate-600 font-mono tracking-[0.15em] px-3 mb-1">{group.label}</p>
             {group.items.map(item => (
-              <NavLink key={item.to} to={item.to} end={item.to === '/'} className="relative group/tip">
+              <NavLink key={item.to} to={item.to} end={item.to === '/'}>
                 {({ isActive }) => (
-                  <>
-                    <div
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
-                        isActive
-                          ? 'bg-cyan-500/8 text-cyan-400 border border-cyan-500/15'
-                          : 'text-slate-500 hover:text-slate-300 hover:bg-white/[0.02] border border-transparent'
-                      }`}
-                    >
-                      <item.icon size={16} className={isActive ? 'opacity-100' : 'opacity-30'} />
-                      <span>{item.label}</span>
-                    </div>
-                    {/* Tooltip */}
-                    {item.desc && (
-                      <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-[#0f0f1a] border border-white/[0.08] text-xs text-slate-300 whitespace-nowrap opacity-0 invisible group-hover/tip:opacity-100 group-hover/tip:visible transition-all duration-150 pointer-events-none z-50 shadow-xl">
-                        {item.desc}
-                        <div className="absolute right-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-r-4 border-t-transparent border-b-transparent border-r-[#0f0f1a]" />
-                      </div>
-                    )}
-                  </>
+                  <div
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
+                      isActive
+                        ? 'bg-cyan-500/8 text-cyan-400 border border-cyan-500/15'
+                        : 'text-slate-500 hover:text-slate-300 hover:bg-white/[0.02] border border-transparent'
+                    }`}
+                    onMouseEnter={e => show(e, item.desc)}
+                    onMouseMove={move}
+                    onMouseLeave={hide}
+                  >
+                    <item.icon size={16} className={isActive ? 'opacity-100' : 'opacity-30'} />
+                    <span>{item.label}</span>
+                  </div>
                 )}
               </NavLink>
             ))}
@@ -187,6 +183,7 @@ export default function Sidebar() {
         <LogOut size={13} />
         <span>退出</span>
       </button>
+      {TooltipOverlay}
     </aside>
   );
 }
