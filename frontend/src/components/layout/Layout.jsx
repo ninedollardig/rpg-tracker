@@ -135,19 +135,25 @@ export default function Layout({ children }) {
             )}
           </div>
 
-          {/* Bottom bar: exit button + home indicator */}
-          <div className="shrink-0 border-t border-white/[0.04] px-4 py-3 space-y-3">
-            <button
-              onClick={toggleViewMode}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-cyan-500/8 border border-cyan-500/15 text-sm text-cyan-400 hover:bg-cyan-500/15 hover:border-cyan-500/25 hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] transition-all group"
-            >
-              <Monitor size={16} className="group-hover:drop-shadow-[0_0_8px_rgba(0,229,255,0.6)] transition-all" />
-              <span>退出手机模式</span>
-            </button>
-            <div className="flex justify-center">
+          {/* Bottom bar */}
+          {showHome ? (
+            <div className="shrink-0 border-t border-white/[0.04] px-4 py-3 space-y-3">
+              <button
+                onClick={toggleViewMode}
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-cyan-500/8 border border-cyan-500/15 text-sm text-cyan-400 hover:bg-cyan-500/15 hover:border-cyan-500/25 hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] transition-all group"
+              >
+                <Monitor size={16} className="group-hover:drop-shadow-[0_0_8px_rgba(0,229,255,0.6)] transition-all" />
+                <span>退出手机模式</span>
+              </button>
+              <div className="flex justify-center">
+                <div className="w-36 h-1.5 bg-white/[0.06] rounded-full" />
+              </div>
+            </div>
+          ) : (
+            <div className="shrink-0 flex justify-center pb-3 pt-2">
               <div className="w-36 h-1.5 bg-white/[0.06] rounded-full" />
             </div>
-          </div>
+          )}
         </div>
       </div>
     );
