@@ -111,6 +111,9 @@ export default function Sidebar() {
                     ? 'bg-cyan-500/8 text-cyan-400 border border-cyan-500/15'
                     : 'text-slate-500 hover:text-slate-300 hover:bg-white/[0.02] border border-transparent'
                 }`}
+                onMouseEnter={e => show(e, 'API Key、模型选择、飞书、自我画像等个人设置')}
+                onMouseMove={move}
+                onMouseLeave={hide}
               >
                 <User size={16} className={isActive ? 'opacity-100' : 'opacity-30'} />
                 <span>我的</span>

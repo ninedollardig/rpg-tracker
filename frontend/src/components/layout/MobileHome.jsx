@@ -14,7 +14,7 @@ const navItems = [
   { to: '/study', label: '期末复习', icon: GraduationCap, color: 'text-sky-400', bg: 'bg-sky-500/8', border: 'border-sky-500/15', desc: '三步学习法：结构化笔记→深度加工→间隔重复' },
   { to: '/stats', label: '数据统计', icon: BarChart3, color: 'text-orange-400', bg: 'bg-orange-500/8', border: 'border-orange-500/15', desc: '活动数据的可视化统计与分析图表' },
   { to: '/daily-reports', label: '日报', icon: Newspaper, color: 'text-pink-400', bg: 'bg-pink-500/8', border: 'border-pink-500/15', desc: '每日总结反思，自动或手动生成日报' },
-  { to: '/profile', label: '我的', icon: User, color: 'text-indigo-400', bg: 'bg-indigo-500/8', border: 'border-indigo-500/15', desc: 'API Key、飞书、自我画像等个人设置' },
+  { to: '/profile', label: '我的', icon: User, color: 'text-indigo-400', bg: 'bg-indigo-500/8', border: 'border-indigo-500/15', desc: 'API Key、模型选择、飞书、自我画像等设置' },
   { to: '/guide', label: '新手指引', icon: HelpCircle, color: 'text-amber-400', bg: 'bg-amber-500/8', border: 'border-amber-500/15', desc: '详细功能说明：输入→逻辑→输出' },
 ];
 
