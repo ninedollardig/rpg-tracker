@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { AuthProvider } from './context/AuthContext';
 import { CharacterProvider } from './context/CharacterContext';
+import { ViewModeProvider } from './context/ViewModeContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Layout from './components/layout/Layout';
 import LoginPage from './pages/LoginPage';
@@ -64,7 +65,7 @@ export default function App() {
             },
           }}
         />
-        <AppRoutes />
+        <ViewModeProvider><AppRoutes /></ViewModeProvider>
       </AuthProvider>
     </BrowserRouter>
   );

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
+import { useViewMode } from '../../context/ViewModeContext';
 
 const WEEKDAY_NAMES = ['日', '一', '二', '三', '四', '五', '六'];
 
@@ -99,12 +100,40 @@ function DayPhaseBar() {
 }
 
 export default function Layout({ children }) {
+  const { viewMode } = useViewMode();
+  const isMobile = viewMode === 'mobile';
+
   return (
     <div className="flex h-screen overflow-hidden bg-[#030308]">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto px-8 py-6">
-        <DayPhaseBar />
-        {children}
+      <main className={`flex-1 overflow-y-auto ${isMobile ? 'flex justify-center px-4' : 'px-8'} py-6`}>
+        {isMobile ? (
+          <div className="w-full max-w-[430px]">
+            {/* Phone frame */}
+            <div className="rounded-[2rem] border border-white/[0.06] bg-[#060610] shadow-[0_0_60px_rgba(0,0,0,0.5),0_0_0_2px_rgba(255,255,255,0.03)] overflow-hidden">
+              {/* Notch */}
+              <div className="flex justify-center pt-2 pb-1">
+                <div className="w-28 h-5 bg-black rounded-full flex items-center justify-center gap-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a2e] ring-1 ring-cyan-500/20" />
+                </div>
+              </div>
+              {/* Content */}
+              <div className="px-5 py-3 max-h-[calc(100vh-140px)] overflow-y-auto">
+                <DayPhaseBar />
+                {children}
+              </div>
+              {/* Home indicator */}
+              <div className="flex justify-center pb-2 pt-1">
+                <div className="w-32 h-1 bg-white/[0.08] rounded-full" />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <DayPhaseBar />
+            {children}
+          </>
+        )}
       </main>
     </div>
   );

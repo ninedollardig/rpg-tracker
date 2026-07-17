@@ -1,7 +1,8 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Sword, Activity, Trophy, Target, BarChart3, LogOut, Send, User, Flame, GraduationCap, Newspaper } from 'lucide-react';
+import { Sword, Activity, Trophy, Target, BarChart3, LogOut, Send, User, Flame, GraduationCap, Newspaper, Smartphone, Monitor } from 'lucide-react';
 import { useCharacterContext } from '../../context/CharacterContext';
 import { useAuth } from '../../context/AuthContext';
+import { useViewMode } from '../../context/ViewModeContext';
 import { getStreakFlame } from '../../lib/streak';
 
 const navGroups = [
@@ -33,6 +34,7 @@ const navGroups = [
 export default function Sidebar() {
   const { character } = useCharacterContext();
   const { logout } = useAuth();
+  const { viewMode, toggleViewMode } = useViewMode();
   const navigate = useNavigate();
 
   const streakFlame = getStreakFlame(character?.streak_days || 0);
@@ -137,6 +139,35 @@ export default function Sidebar() {
           </button>
         </div>
       )}
+
+      {/* View Mode Toggle */}
+      <div className="px-5 py-3 border-t border-white/[0.05]">
+        <button
+          onClick={toggleViewMode}
+          className={`w-full flex items-center gap-3 px-2 py-2 rounded-xl text-xs transition-all duration-200 ${
+            viewMode === 'mobile'
+              ? 'bg-emerald-500/8 text-emerald-400 border border-emerald-500/15'
+              : 'text-slate-600 hover:text-slate-400 hover:bg-white/[0.02] border border-transparent'
+          }`}
+        >
+          {viewMode === 'mobile' ? <Smartphone size={14} /> : <Monitor size={14} />}
+          <div className="flex-1 text-left">
+            <div className="text-[11px] leading-tight">{viewMode === 'mobile' ? '手机界面' : '桌面界面'}</div>
+            <div className="text-[9px] text-slate-600 leading-tight">点击切换</div>
+          </div>
+          <div
+            className={`w-8 h-4 rounded-full relative transition-colors duration-200 ${
+              viewMode === 'mobile' ? 'bg-emerald-500/30' : 'bg-white/[0.08]'
+            }`}
+          >
+            <div
+              className={`absolute top-0.5 w-3 h-3 rounded-full bg-white/80 transition-all duration-200 ${
+                viewMode === 'mobile' ? 'left-[18px] bg-emerald-400' : 'left-0.5'
+              }`}
+            />
+          </div>
+        </button>
+      </div>
 
       {/* Logout */}
       <button
