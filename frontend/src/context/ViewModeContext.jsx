@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const ViewModeContext = createContext();
 
@@ -12,6 +12,8 @@ export function ViewModeProvider({ children }) {
       return 'desktop';
     }
   });
+  // mobilePage: null = show home nav, string = current route
+  const [mobilePage, setMobilePage] = useState(null);
 
   useEffect(() => {
     try {
@@ -19,12 +21,18 @@ export function ViewModeProvider({ children }) {
     } catch { /* ignore */ }
   }, [viewMode]);
 
-  const toggleViewMode = () => {
+  const toggleViewMode = useCallback(() => {
     setViewMode(prev => prev === 'desktop' ? 'mobile' : 'desktop');
-  };
+  }, []);
+
+  const goMobilePage = useCallback((path) => setMobilePage(path), []);
+  const goMobileHome = useCallback(() => setMobilePage(null), []);
 
   return (
-    <ViewModeContext.Provider value={{ viewMode, setViewMode, toggleViewMode }}>
+    <ViewModeContext.Provider value={{
+      viewMode, setViewMode, toggleViewMode,
+      mobilePage, goMobilePage, goMobileHome,
+    }}>
       {children}
     </ViewModeContext.Provider>
   );
