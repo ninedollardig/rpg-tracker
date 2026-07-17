@@ -5,7 +5,9 @@ import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DB_PATH = join(__dirname, '..', 'data', 'rpg-tracker.db');
+// Vercel only allows writes to /tmp; bundled .db is read from backend/data/
+const BUNDLED_DB = join(__dirname, '..', 'data', 'rpg-tracker.db');
+const DB_PATH = process.env.VERCEL === '1' ? '/tmp/rpg-tracker.db' : BUNDLED_DB;
 
 let db = null;
 
@@ -14,8 +16,12 @@ export async function getDb() {
 
   const SQL = await initSqlJs();
 
+  // Vercel: try /tmp first (previous warm invocation), fall back to bundled db
   if (existsSync(DB_PATH)) {
     const buffer = readFileSync(DB_PATH);
+    db = new SQL.Database(buffer);
+  } else if (DB_PATH !== BUNDLED_DB && existsSync(BUNDLED_DB)) {
+    const buffer = readFileSync(BUNDLED_DB);
     db = new SQL.Database(buffer);
   } else {
     db = new SQL.Database();
