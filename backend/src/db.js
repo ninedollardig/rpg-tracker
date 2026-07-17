@@ -14,7 +14,9 @@ let db = null;
 export async function getDb() {
   if (db) return db;
 
-  const SQL = await initSqlJs();
+  const SQL = await initSqlJs({
+    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.11.0/${file}`
+  });
 
   // Vercel: try /tmp first (previous warm invocation), fall back to bundled db
   if (existsSync(DB_PATH)) {

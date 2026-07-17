@@ -6,3 +6,5 @@ dist/
 backend/data/*.json
 *.log
 .DS_Store
+
+.vercel
