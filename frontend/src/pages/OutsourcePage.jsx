@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { SendHorizontal, History, ChevronRight, Clock, Flag, Trash2, Sparkles, RefreshCw } from 'lucide-react';
+import { SendHorizontal, History, ChevronRight, Clock, Flag, Trash2, Sparkles } from 'lucide-react';
 import { useOutsource } from '../hooks/useOutsource';
 import TaskInput from '../components/outsource/TaskInput';
 import StepTable from '../components/outsource/StepTable';
+import { useViewMode } from '../context/ViewModeContext';
 
 const STATUS_LABELS = {
   draft: '草稿',
@@ -18,6 +19,8 @@ const STATUS_STYLE = {
 };
 
 export default function OutsourcePage() {
+  const { viewMode } = useViewMode();
+  const isMobile = viewMode === 'mobile';
   const {
     tasks, currentTask, loading, decomposing, error,
     fetchTasks, createTask, fetchTask, updateSteps, pushToFeishu, deleteTask,
@@ -92,12 +95,12 @@ export default function OutsourcePage() {
           }`}
         >
           {/* Result header */}
-          <div className="px-6 py-4 border-b border-white/[0.06]">
-            <div className="flex items-start justify-between gap-4">
+          <div className={`${isMobile ? 'px-4 py-3' : 'px-6 py-4'} border-b border-white/[0.06]`}>
+            <div className={`${isMobile ? 'flex flex-col gap-3' : 'flex items-start justify-between gap-4'}`}>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1.5">
-                  <Sparkles size={15} className="text-cyan-400" />
-                  <h3 className="text-white/80 font-semibold truncate">{currentTask.title}</h3>
+                  <Sparkles size={15} className="text-cyan-400 shrink-0" />
+                  <h3 className="text-white/80 font-semibold truncate text-sm">{currentTask.title}</h3>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
                   {currentTask.deadline && (
@@ -126,7 +129,7 @@ export default function OutsourcePage() {
                       handlePushToFeishu(currentTask.id)
                     );
                   }}
-                  className="flex items-center gap-2 px-4 py-2 bg-cyan-500/10 text-cyan-400 border border-cyan-500/15 rounded-lg text-sm hover:bg-cyan-500/15 hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] shrink-0 transition-all"
+                  className={`flex items-center gap-2 px-4 py-2 bg-cyan-500/10 text-cyan-400 border border-cyan-500/15 rounded-lg text-sm hover:bg-cyan-500/15 hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] transition-all ${isMobile ? 'w-full justify-center' : 'shrink-0'}`}
                 >
                   <SendHorizontal size={15} />
                   推送飞书
@@ -136,7 +139,7 @@ export default function OutsourcePage() {
           </div>
 
           {/* Steps table */}
-          <div className="px-6 py-4">
+          <div className={`${isMobile ? 'px-4 py-3' : 'px-6 py-4'}`}>
             <StepTable
               steps={currentTask.steps}
               onChange={(newSteps) => {
@@ -146,7 +149,7 @@ export default function OutsourcePage() {
           </div>
 
           {/* Footer */}
-          <div className="px-6 py-3 border-t border-white/[0.06] flex items-center justify-between">
+          <div className={`${isMobile ? 'px-4 py-2.5' : 'px-6 py-3'} border-t border-white/[0.06] flex items-center justify-between`}>
             <button
               onClick={() => {
                 updateSteps(currentTask.id, currentTask.steps).then(() =>

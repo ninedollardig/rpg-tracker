@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { ArrowRight, ArrowLeft, Send, Check } from 'lucide-react';
 import STEPS from './taskSteps';
 import TaskInputLoading from './TaskInputLoading';
+import { useViewMode } from '../../context/ViewModeContext';
 
 export default function TaskInput({ onSubmit, loading }) {
+  const { viewMode } = useViewMode();
+  const isMobile = viewMode === 'mobile';
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [customDate, setCustomDate] = useState('');
@@ -83,9 +86,12 @@ export default function TaskInput({ onSubmit, loading }) {
         />
       </div>
 
-      <div className="p-6 sm:p-8">
+      <div className={isMobile ? 'p-4' : 'p-6 sm:p-8'}>
         {/* Step cards row */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 mb-8">
+        <div className={isMobile
+          ? 'flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 mb-6'
+          : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 mb-8'
+        }>
           {STEPS.map((s, i) => {
             const isCurrent = i === step;
             const isPast = i < step;
@@ -93,17 +99,15 @@ export default function TaskInput({ onSubmit, loading }) {
               <button
                 key={s.key}
                 onClick={() => { if (isPast || answers[s.key]) setStep(i); }}
-                className={`text-left rounded-xl p-3 transition-all duration-200 cursor-pointer ${
-                  isCurrent
-                    ? 'bg-cyan-500/8 border border-cyan-500/15 shadow-[0_0_12px_rgba(0,229,255,0.1)]'
-                    : isPast
-                    ? 'bg-white/[0.02] border border-white/[0.04] opacity-60 hover:opacity-80'
-                    : 'bg-white/[0.01] border border-white/[0.03] opacity-40'
+                className={`text-left rounded-xl transition-all duration-200 cursor-pointer ${
+                  isMobile
+                    ? `shrink-0 w-[130px] p-2.5 ${isCurrent ? 'bg-cyan-500/8 border border-cyan-500/15' : isPast ? 'bg-white/[0.02] border border-white/[0.04] opacity-60' : 'bg-white/[0.01] border border-white/[0.03] opacity-40'}`
+                    : `p-3 ${isCurrent ? 'bg-cyan-500/8 border border-cyan-500/15 shadow-[0_0_12px_rgba(0,229,255,0.1)]' : isPast ? 'bg-white/[0.02] border border-white/[0.04] opacity-60 hover:opacity-80' : 'bg-white/[0.01] border border-white/[0.03] opacity-40'}`
                 }`}
               >
                 <div className="flex items-center gap-1.5 mb-1">
                   <span
-                    className={`text-[10px] font-bold w-4 h-4 rounded flex items-center justify-center ${
+                    className={`text-[10px] font-bold w-4 h-4 rounded flex items-center justify-center shrink-0 ${
                       isCurrent
                         ? 'bg-cyan-500/10 text-cyan-400'
                         : isPast
@@ -121,7 +125,7 @@ export default function TaskInput({ onSubmit, loading }) {
                     {s.shortTitle}
                   </span>
                 </div>
-                <p className="text-[10px] text-slate-600 leading-relaxed">{s.explain}</p>
+                {!isMobile && <p className="text-[10px] text-slate-600 leading-relaxed">{s.explain}</p>}
               </button>
             );
           })}
