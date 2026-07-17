@@ -146,7 +146,7 @@ export default function ProfilePage() {
             </button>
           </div>
 
-          <p className="text-[10px] text-slate-600 font-mono tracking-wider uppercase">🌍 海外</p>
+          <p className="text-[10px] text-slate-600 font-mono tracking-wider uppercase">海外</p>
             <div className="grid grid-cols-2 gap-2">
               {[
                 { id: 'gpt-5.5', label: 'GPT-5.5', desc: 'OpenAI' },
@@ -177,7 +177,7 @@ export default function ProfilePage() {
                 </button>
               ))}
             </div>
-            <p className="text-[10px] text-slate-600 font-mono tracking-wider uppercase">🇨🇳 国内</p>
+            <p className="text-[10px] text-slate-600 font-mono tracking-wider uppercase">国内</p>
             <div className="grid grid-cols-2 gap-2">
               {[
                 { id: 'qwen3.5-max', label: 'Qwen3.5 Max', desc: '通义千问' },
