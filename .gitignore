@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+*.secret
+*.pem
+backend/data/*.json
+*.log
+.DS_Store

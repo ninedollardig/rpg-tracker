@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0a1a"/>
+      <stop offset="100%" stop-color="#0d1117"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowStrong">
+      <feGaussianBlur stdDeviation="5"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Transparent background, hexagon shape only -->
+
+  <!-- Outer glow layers -->
+  <polygon points="128,8 236,72 236,184 128,248 20,184 20,72" fill="url(#bg)" stroke="#1a1a3c" stroke-width="2"/>
+  <polygon points="128,16 228,76 228,180 128,240 28,180 28,76" fill="none" stroke="#00f0ff" stroke-width="1" opacity="0.2"/>
+  <polygon points="128,24 220,80 220,176 128,232 36,176 36,80" fill="none" stroke="#00f0ff" stroke-width="1" opacity="0.3"/>
+
+  <!-- Inner hex ring -->
+  <polygon points="128,56 190,94 190,162 128,200 66,162 66,94" fill="none" stroke="#00f0ff" stroke-width="2" filter="url(#glow)" opacity="0.8"/>
+
+  <!-- Diamond crystal -->
+  <polygon points="128,76 180,128 128,180 76,128" fill="rgba(0,240,255,0.06)" stroke="#00f0ff" stroke-width="1.5" filter="url(#glow)"/>
+
+  <!-- Energy core -->
+  <circle cx="128" cy="128" r="30" fill="none" stroke="#7b2fff" stroke-width="1.5" filter="url(#glowStrong)" opacity="0.6"/>
+  <circle cx="128" cy="128" r="14" fill="rgba(123,47,255,0.2)" stroke="#00f0ff" stroke-width="1.5" filter="url(#glowStrong)"/>
+  <circle cx="128" cy="128" r="5" fill="#ffffff" filter="url(#glowStrong)"/>
+
+  <!-- Vertex nodes + connecting lines -->
+  <g filter="url(#glow)">
+    <circle cx="128" cy="56" r="3.5" fill="#00f0ff"/>
+    <circle cx="190" cy="94" r="3.5" fill="#00f0ff"/>
+    <circle cx="190" cy="162" r="3.5" fill="#00f0ff"/>
+    <circle cx="128" cy="200" r="3.5" fill="#00f0ff"/>
+    <circle cx="66" cy="162" r="3.5" fill="#00f0ff"/>
+    <circle cx="66" cy="94" r="3.5" fill="#00f0ff"/>
+  </g>
+  <g stroke="#00f0ff" stroke-width="0.8" opacity="0.15">
+    <line x1="128" y1="56" x2="128" y2="128"/>
+    <line x1="190" y1="94" x2="128" y2="128"/>
+    <line x1="190" y1="162" x2="128" y2="128"/>
+    <line x1="128" y1="200" x2="128" y2="128"/>
+    <line x1="66" y1="162" x2="128" y2="128"/>
+    <line x1="66" y1="94" x2="128" y2="128"/>
+  </g>
+
+  <!-- Progress bars -->
+  <rect x="78" y="194" width="100" height="2.5" rx="1" fill="#12122e"/>
+  <rect x="78" y="194" width="45" height="2.5" rx="1" fill="#00f0ff" opacity="0.8"/>
+  <rect x="78" y="202" width="100" height="2" rx="1" fill="#12122e"/>
+  <rect x="78" y="202" width="82" height="2" rx="1" fill="#7b2fff" opacity="0.6"/>
+  <rect x="78" y="208" width="100" height="2" rx="1" fill="#12122e"/>
+  <rect x="78" y="208" width="110" height="2" rx="1" fill="#ff2d95" opacity="0.4"/>
+</svg>

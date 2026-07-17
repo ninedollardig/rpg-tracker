@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm start *)",
+      "Bash(cmd *)",
+      "Bash(node src/index.js)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill *)",
+      "Bash(curl *)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\([t for t in d['tasks'] if t['id']==5]\\)\")",
+      "Bash(python3 *)",
+      "Bash(python *)",
+      "Bash(pip install *)",
+      "Bash(awk '{print $5}')",
+      "Read(//c/Users/Lenovo/.claude/projects/D--AItools-Wang/**)",
+      "Read(//c/Users/Lenovo/.claude/projects\" 2>/dev/**)",
+      "Read(//d/AItools-Wang/.claude/projects/**)",
+      "Bash(claude --dangerously-skip-permissions)",
+      "Bash(npm install *)",
+      "Bash(node -e \"console.log\\(require\\('crypto'\\).randomBytes\\(32\\).toString\\('hex'\\)\\)\")",
+      "Bash(npx nodemon *)",
+      "Bash(npx vite *)",
+      "Bash(node -e \"process.stdin.on\\('data',d=>{const j=JSON.parse\\(d\\);console.log\\('Login OK, token:',j.token.slice\\(0,20\\)+'...'\\)}\\)\")",
+      "Bash(node -e \"process.stdin.on\\('data',d=>{const j=JSON.parse\\(d\\);console.log\\('name:',j.name,'level:',j.level,'stats:',JSON.stringify\\(j.stats\\)\\)}\\)\")",
+      "Bash(npx @larksuite/cli --version)",
+      "Bash(lark-cli auth *)",
+      "Bash(npx *)",
+      "Bash(lark-cli *)"
+    ]
+  }
+}
