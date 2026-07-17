@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Monitor } from 'lucide-react';
 import Sidebar from './Sidebar';
 import MobileHome from './MobileHome';
 import { useViewMode } from '../../context/ViewModeContext';
@@ -102,7 +102,7 @@ function DayPhaseBar() {
 }
 
 export default function Layout({ children }) {
-  const { viewMode, mobilePage, goMobileHome } = useViewMode();
+  const { viewMode, mobilePage, goMobileHome, toggleViewMode } = useViewMode();
   const isMobile = viewMode === 'mobile';
   const showHome = isMobile && !mobilePage;
 
@@ -111,11 +111,19 @@ export default function Layout({ children }) {
       <div className="flex h-screen overflow-hidden bg-[#030308] justify-center items-start py-4">
         {/* Phone frame */}
         <div className="w-full max-w-[430px] h-full max-h-[920px] rounded-[2.5rem] border border-white/[0.06] bg-[#060610] shadow-[0_0_80px_rgba(0,0,0,0.6),0_0_0_2px_rgba(255,255,255,0.03)] overflow-hidden flex flex-col">
-          {/* Notch */}
-          <div className="shrink-0 flex justify-center pt-3 pb-1">
+          {/* Top bar: notch + exit */}
+          <div className="shrink-0 flex items-center justify-between pt-3 pb-1 px-4">
+            <div className="w-8" />
             <div className="w-32 h-6 bg-black rounded-full flex items-center justify-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-[#0a0a14] ring-1 ring-cyan-500/15" />
             </div>
+            <button
+              onClick={toggleViewMode}
+              title="退出手机模式"
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] hover:border-cyan-500/20 transition-all group"
+            >
+              <Monitor size={14} className="text-slate-500 group-hover:text-cyan-400 group-hover:drop-shadow-[0_0_6px_rgba(0,229,255,0.5)] transition-all" />
+            </button>
           </div>
 
           {/* Content area */}
@@ -125,13 +133,13 @@ export default function Layout({ children }) {
             ) : (
               <>
                 {/* Back button */}
-                <div className="sticky top-0 z-10 bg-[#060610]/90 backdrop-blur-xl border-b border-white/[0.04] px-4 py-3">
+                <div className="sticky top-0 z-10 bg-[#060610]/90 backdrop-blur-xl border-b border-white/[0.04] px-4 py-3 flex items-center">
                   <button
                     onClick={goMobileHome}
-                    className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+                    className="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 transition-all group"
                   >
-                    <ArrowLeft size={18} />
-                    <span className="text-xs">返回</span>
+                    <ArrowLeft size={18} className="drop-shadow-[0_0_8px_rgba(0,229,255,0.5)] group-hover:drop-shadow-[0_0_14px_rgba(0,229,255,0.7)] transition-all" />
+                    <span className="text-xs text-cyan-400/80 group-hover:text-cyan-300">返回</span>
                   </button>
                 </div>
                 <div className="px-4 py-3">
