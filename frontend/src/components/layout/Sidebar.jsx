@@ -9,24 +9,24 @@ const navGroups = [
   {
     label: '核心',
     items: [
-      { to: '/', label: '角色面板', icon: Sword },
+      { to: '/', label: '角色面板', icon: Sword, desc: '查看角色等级、属性、签到和每日运势' },
     ],
   },
   {
     label: '修炼',
     items: [
-      { to: '/activities', label: '活动记录', icon: Activity },
-      { to: '/achievements', label: '成就徽章', icon: Trophy },
-      { to: '/quests', label: '任务', icon: Target },
+      { to: '/activities', label: '活动记录', icon: Activity, desc: '记录日常活动，完成任务获得经验值' },
+      { to: '/achievements', label: '成就徽章', icon: Trophy, desc: '达成条件解锁徽章，佩戴展示你的成就' },
+      { to: '/quests', label: '任务', icon: Target, desc: '每日/每周任务，完成后获得 EXP 奖励' },
     ],
   },
   {
     label: '工具',
     items: [
-      { to: '/outsource', label: '庶务外包', icon: Send },
-      { to: '/study', label: '期末复习', icon: GraduationCap },
-      { to: '/stats', label: '数据统计', icon: BarChart3 },
-      { to: '/daily-reports', label: '日报', icon: Newspaper },
+      { to: '/outsource', label: '庶务外包', icon: Send, desc: 'AI 帮你将复杂任务拆解为可执行的步骤' },
+      { to: '/study', label: '期末复习', icon: GraduationCap, desc: '三步学习法：结构化笔记 → 深度加工 → 间隔重复' },
+      { to: '/stats', label: '数据统计', icon: BarChart3, desc: '活动数据的可视化统计与分析图表' },
+      { to: '/daily-reports', label: '日报', icon: Newspaper, desc: '每日总结反思，自动或手动生成日报' },
     ],
   },
 ];
@@ -77,18 +77,27 @@ export default function Sidebar() {
           <div key={group.label} className="space-y-0.5">
             <p className="text-[10px] text-slate-600 font-mono tracking-[0.15em] px-3 mb-1">{group.label}</p>
             {group.items.map(item => (
-              <NavLink key={item.to} to={item.to} end={item.to === '/'}>
+              <NavLink key={item.to} to={item.to} end={item.to === '/'} className="relative group/tip">
                 {({ isActive }) => (
-                  <div
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
-                      isActive
-                        ? 'bg-cyan-500/8 text-cyan-400 border border-cyan-500/15'
-                        : 'text-slate-500 hover:text-slate-300 hover:bg-white/[0.02] border border-transparent'
-                    }`}
-                  >
-                    <item.icon size={16} className={isActive ? 'opacity-100' : 'opacity-30'} />
-                    <span>{item.label}</span>
-                  </div>
+                  <>
+                    <div
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
+                        isActive
+                          ? 'bg-cyan-500/8 text-cyan-400 border border-cyan-500/15'
+                          : 'text-slate-500 hover:text-slate-300 hover:bg-white/[0.02] border border-transparent'
+                      }`}
+                    >
+                      <item.icon size={16} className={isActive ? 'opacity-100' : 'opacity-30'} />
+                      <span>{item.label}</span>
+                    </div>
+                    {/* Tooltip */}
+                    {item.desc && (
+                      <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-[#0f0f1a] border border-white/[0.08] text-xs text-slate-300 whitespace-nowrap opacity-0 invisible group-hover/tip:opacity-100 group-hover/tip:visible transition-all duration-150 pointer-events-none z-50 shadow-xl">
+                        {item.desc}
+                        <div className="absolute right-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-r-4 border-t-transparent border-b-transparent border-r-[#0f0f1a]" />
+                      </div>
+                    )}
+                  </>
                 )}
               </NavLink>
             ))}

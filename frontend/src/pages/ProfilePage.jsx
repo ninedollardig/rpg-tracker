@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Key, Brain, Sparkles, Eye, EyeOff, Check } from 'lucide-react';
+import { Key, Brain, Sparkles, Eye, EyeOff, Check, Sword, Activity, Trophy, Target, BarChart3, Send, GraduationCap, Newspaper, HelpCircle } from 'lucide-react';
 import { apiGet, apiPut, apiPost } from '../api/client';
 
 function useDebouncedSave(delay = 800) {
@@ -98,6 +98,47 @@ export default function ProfilePage() {
         <span className={`text-[11px] transition-colors ${saved ? 'text-emerald-500/60' : 'text-amber-400/60'}`}>
           {saved ? '已保存' : '保存中...'}
         </span>
+      </div>
+
+      {/* Beginner's Guide */}
+      <div
+        className="rounded-2xl p-5"
+        style={{
+          background: 'rgba(10,10,18,0.5)',
+          border: '1px solid rgba(255,255,255,0.06)',
+        }}
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <HelpCircle size={15} className="text-amber-400" />
+          <h3 className="text-sm font-semibold text-white/70">新手指引</h3>
+        </div>
+        <p className="text-[11px] text-slate-500 mb-4 leading-relaxed">
+          数值进化系统将你的日常活动转化为 RPG 角色成长。记录活动 → 获得经验 → 升级 → 解锁成就。
+          以下是各功能简介，侧边栏鼠标悬停图标也可查看说明。
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {[
+            { icon: Sword, label: '角色面板', desc: '查看角色等级、属性、每日签到和运势', color: 'text-cyan-400' },
+            { icon: Activity, label: '活动记录', desc: '记录四类日常活动，每次记录获得 EXP', color: 'text-violet-400' },
+            { icon: Trophy, label: '成就徽章', desc: '达成条件解锁徽章，可佩戴展示', color: 'text-amber-400' },
+            { icon: Target, label: '任务', desc: '每日 4 项 + 每周 3 项，完成获额外奖励', color: 'text-rose-400' },
+            { icon: Send, label: '庶务外包', desc: '输入复杂任务，AI 拆解为可执行步骤', color: 'text-emerald-400' },
+            { icon: GraduationCap, label: '期末复习', desc: '三步学习：结构化→深度加工→间隔重复', color: 'text-sky-400' },
+            { icon: BarChart3, label: '数据统计', desc: '活动趋势、分类占比、月度热力图', color: 'text-orange-400' },
+            { icon: Newspaper, label: '日报', desc: '每日总结反思，支持手动或自动生成', color: 'text-pink-400' },
+          ].map(f => (
+            <div
+              key={f.label}
+              className="flex items-start gap-3 px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.08] transition-colors"
+            >
+              <f.icon size={15} className={`${f.color} mt-0.5 shrink-0`} />
+              <div>
+                <span className="text-xs text-white/70 font-medium">{f.label}</span>
+                <p className="text-[10px] text-slate-500 leading-relaxed mt-0.5">{f.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* API Key */}
