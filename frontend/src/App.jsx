@@ -16,6 +16,7 @@ import ProfilePage from './pages/ProfilePage';
 import StudyDashboardPage from './pages/StudyDashboardPage';
 import StudyWorkbenchPage from './pages/StudyWorkbenchPage';
 import DailyReportsPage from './pages/DailyReportsPage';
+import GuidePage from './pages/GuidePage';
 
 function AppRoutes() {
   return (
@@ -37,6 +38,7 @@ function AppRoutes() {
                 <Route path="/study" element={<StudyDashboardPage />} />
                 <Route path="/study/:id" element={<StudyWorkbenchPage />} />
                 <Route path="/daily-reports" element={<DailyReportsPage />} />
+                <Route path="/guide" element={<GuidePage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Layout>

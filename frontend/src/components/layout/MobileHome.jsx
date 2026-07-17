@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Sword, Activity, Trophy, Target, BarChart3, Send, User, GraduationCap, Newspaper, LogOut, Flame } from 'lucide-react';
+import { Sword, Activity, Trophy, Target, BarChart3, Send, User, GraduationCap, Newspaper, LogOut, Flame, HelpCircle } from 'lucide-react';
 import { useCharacterContext } from '../../context/CharacterContext';
 import { useAuth } from '../../context/AuthContext';
 import { useViewMode } from '../../context/ViewModeContext';
@@ -15,6 +15,7 @@ const navItems = [
   { to: '/stats', label: '数据统计', icon: BarChart3, color: 'text-orange-400', bg: 'bg-orange-500/8', border: 'border-orange-500/15', desc: '活动数据的可视化统计与分析图表' },
   { to: '/daily-reports', label: '日报', icon: Newspaper, color: 'text-pink-400', bg: 'bg-pink-500/8', border: 'border-pink-500/15', desc: '每日总结反思，自动或手动生成日报' },
   { to: '/profile', label: '我的', icon: User, color: 'text-indigo-400', bg: 'bg-indigo-500/8', border: 'border-indigo-500/15', desc: 'API Key、飞书、自我画像等个人设置' },
+  { to: '/guide', label: '新手指引', icon: HelpCircle, color: 'text-amber-400', bg: 'bg-amber-500/8', border: 'border-amber-500/15', desc: '详细功能说明：输入→逻辑→输出' },
 ];
 
 export default function MobileHome() {

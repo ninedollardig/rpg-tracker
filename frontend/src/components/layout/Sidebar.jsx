@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Sword, Activity, Trophy, Target, BarChart3, LogOut, Send, User, Flame, GraduationCap, Newspaper, Smartphone, Monitor } from 'lucide-react';
+import { Sword, Activity, Trophy, Target, BarChart3, LogOut, Send, User, Flame, GraduationCap, Newspaper, Smartphone, Monitor, HelpCircle } from 'lucide-react';
 import { useCharacterContext } from '../../context/CharacterContext';
 import { useAuth } from '../../context/AuthContext';
 import { useViewMode } from '../../context/ViewModeContext';
@@ -27,6 +27,7 @@ const navGroups = [
       { to: '/study', label: '期末复习', icon: GraduationCap, desc: '三步学习法：结构化笔记 → 深度加工 → 间隔重复' },
       { to: '/stats', label: '数据统计', icon: BarChart3, desc: '活动数据的可视化统计与分析图表' },
       { to: '/daily-reports', label: '日报', icon: Newspaper, desc: '每日总结反思，自动或手动生成日报' },
+      { to: '/guide', label: '新手指引', icon: HelpCircle, desc: '详细功能说明：输入→逻辑→输出，附具体例子' },
     ],
   },
 ];
