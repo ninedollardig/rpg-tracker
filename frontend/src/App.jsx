@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { AuthProvider } from './context/AuthContext';
-import { CharacterProvider } from './context/CharacterContext';
+import { CharacterProvider, useCharacterContext } from './context/CharacterContext';
 import { ViewModeProvider } from './context/ViewModeContext';
+import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Layout from './components/layout/Layout';
+import LevelUpEffect from './components/effects/LevelUpEffect';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import OutsourcePage from './pages/OutsourcePage';
@@ -18,6 +20,18 @@ import StudyWorkbenchPage from './pages/StudyWorkbenchPage';
 import DailyReportsPage from './pages/DailyReportsPage';
 import GuidePage from './pages/GuidePage';
 
+function GlobalLevelUp() {
+  const { levelUpEvent, clearLevelUp } = useCharacterContext();
+  return (
+    <LevelUpEffect
+      show={!!levelUpEvent}
+      level={levelUpEvent?.level}
+      title={levelUpEvent?.title}
+      onDone={clearLevelUp}
+    />
+  );
+}
+
 function AppRoutes() {
   return (
     <Routes>
@@ -25,6 +39,7 @@ function AppRoutes() {
       <Route path="/*" element={
         <ProtectedRoute>
           <CharacterProvider>
+            <GlobalLevelUp />
             <Layout>
               <Routes>
                 <Route path="/" element={<DashboardPage />} />
@@ -52,23 +67,25 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Toaster
-          position="top-center"
-          toastOptions={{
-            style: {
-              background: 'rgba(15,15,25,0.9)',
-              backdropFilter: 'blur(20px)',
-              color: '#e2e8f0',
-              border: '1px solid rgba(255,255,255,0.08)',
-              borderRadius: '12px',
-              fontFamily: '"Inter", "Noto Sans SC", sans-serif',
-              fontSize: '14px',
-            },
-          }}
-        />
-        <ViewModeProvider><AppRoutes /></ViewModeProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              style: {
+                background: 'var(--toast-bg)',
+                backdropFilter: 'blur(20px)',
+                color: 'var(--text-primary)',
+                border: '1px solid var(--toast-border)',
+                borderRadius: '12px',
+                fontFamily: '"Inter", "Noto Sans SC", sans-serif',
+                fontSize: '14px',
+              },
+            }}
+          />
+          <ViewModeProvider><AppRoutes /></ViewModeProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

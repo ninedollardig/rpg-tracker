@@ -6,6 +6,7 @@
 
 :root {
   --glass-bg: #030308;
+  --sidebar-bg: #010106;
   --glass-surface: rgba(255, 255, 255, 0.03);
   --glass-surface-hover: rgba(255, 255, 255, 0.06);
   --glass-border: rgba(255, 255, 255, 0.06);
@@ -19,7 +20,392 @@
   --success: #34d399;
   --danger: #f87171;
   --warning: #fbbf24;
+  --body-glow-1: rgba(0, 229, 255, 0.04);
+  --body-glow-2: rgba(167, 139, 250, 0.03);
+  --toast-bg: rgba(15,15,25,0.9);
+  --toast-border: rgba(255,255,255,0.08);
+
+  /* Card colors — muted monochromatic, postal-inspired */
+  --card-narrative: linear-gradient(135deg, rgba(41,37,36,0.7), rgba(69,26,3,0.2));
+  --card-narrative-border: rgba(168,162,158,0.1);
+  --card-checkin: linear-gradient(135deg, rgba(15,23,42,0.7), rgba(22,78,99,0.2));
+  --card-checkin-border: rgba(71,85,105,0.1);
+  --card-character: linear-gradient(135deg, rgba(30,27,75,0.65), rgba(15,23,42,0.25));
+  --card-character-border: rgba(99,102,241,0.1);
+  --card-radar: linear-gradient(135deg, rgba(46,16,71,0.55), rgba(30,10,50,0.2));
+  --card-radar-border: rgba(139,92,246,0.12);
+  /* Radar chart colors */
+  --radar-stroke: #5b8c9e;
+  --radar-fill: rgba(91,140,158,0.22);
+  --radar-grid: rgba(255,255,255,0.06);
+  --radar-axis-tick: #94a3b8;
+  --radar-radius-tick: #64748b;
+  --radar-tier-high: #4d8c8c;
+  --radar-tier-high-bg: rgba(77,140,140,0.08);
+  --radar-tier-high-border: rgba(77,140,140,0.18);
+  --radar-tier-mid: #8b7baa;
+  --radar-tier-mid-bg: rgba(139,123,170,0.06);
+  --radar-tier-mid-border: rgba(139,123,170,0.14);
+  --radar-tier-low: #9ca3af;
+  --radar-tier-low-bg: rgba(156,163,175,0.04);
+  --radar-tier-low-border: rgba(156,163,175,0.1);
+  --radar-score-9: #4d8c8c;
+  --radar-score-7: #8b7baa;
+  --radar-score-0: #9ca3af;
+  --radar-dim-name: #cbd5e1;
+  --radar-dim-desc: #64748b;
+  --radar-dim-bar-bg: rgba(255,255,255,0.04);
+  --card-tasks: linear-gradient(135deg, rgba(6,48,38,0.55), rgba(5,36,22,0.2));
+  --card-tasks-border: rgba(16,185,129,0.1);
+  /* GuidePage cards */
+  --card-guide-dashboard: linear-gradient(135deg, rgba(15,23,42,0.65), rgba(30,41,59,0.2));
+  --card-guide-activities: linear-gradient(135deg, rgba(46,16,71,0.6), rgba(88,28,135,0.2));
+  --card-guide-achievements: linear-gradient(135deg, rgba(69,26,3,0.55), rgba(113,63,18,0.2));
+  --card-guide-quests: linear-gradient(135deg, rgba(76,5,25,0.5), rgba(136,19,55,0.18));
+  --card-guide-outsource: linear-gradient(135deg, rgba(6,48,38,0.55), rgba(15,80,55,0.2));
+  --card-guide-study: linear-gradient(135deg, rgba(12,35,52,0.6), rgba(22,55,82,0.2));
+  --card-guide-stats: linear-gradient(135deg, rgba(67,20,7,0.55), rgba(120,30,10,0.18));
+  --card-guide-reports: linear-gradient(135deg, rgba(76,5,40,0.5), rgba(136,19,70,0.18));
+  --card-guide-profile: linear-gradient(135deg, rgba(30,27,75,0.6), rgba(49,46,129,0.2));
+  --card-guide-border: rgba(255,255,255,0.06);
+  /* Profile page cards */
+  --card-profile-apikey: linear-gradient(135deg, rgba(12,35,52,0.6), rgba(22,55,82,0.25));
+  --card-profile-apikey-border: rgba(14,116,144,0.12);
+  --card-profile-feishu: linear-gradient(135deg, rgba(46,16,71,0.55), rgba(88,28,135,0.2));
+  --card-profile-feishu-border: rgba(139,92,246,0.12);
+  --card-profile-export: linear-gradient(135deg, rgba(69,26,3,0.5), rgba(113,63,18,0.2));
+  --card-profile-export-border: rgba(180,83,9,0.1);
+  --card-profile-self: linear-gradient(135deg, rgba(30,27,75,0.55), rgba(49,46,129,0.2));
+  --card-profile-self-border: rgba(99,102,241,0.1);
+  --card-profile-radar: linear-gradient(135deg, rgba(6,48,38,0.5), rgba(15,80,55,0.2));
+  --card-profile-radar-border: rgba(20,184,166,0.1);
+  /* Feature pages */
+  --card-outsource: linear-gradient(135deg, rgba(69,26,3,0.5), rgba(113,63,18,0.2));
+  --card-outsource-border: rgba(180,83,9,0.1);
+  --card-study: linear-gradient(135deg, rgba(12,35,52,0.55), rgba(22,55,82,0.25));
+  --card-study-border: rgba(14,116,144,0.12);
+  /* Year heatmap */
+  --heatmap-empty: rgba(255,255,255,0.03);
+  --heatmap-l1: rgba(99,102,241,0.15);
+  --heatmap-l2: rgba(99,102,241,0.35);
+  --heatmap-l3: rgba(99,102,241,0.58);
+  --heatmap-l4: rgba(99,102,241,0.82);
+  --heatmap-today-ring: rgba(99,102,241,0.55);
 }
+
+/* 米白色极简主题 — 柔和暖灰调 */
+[data-theme="light"] {
+  --glass-bg: #e8e4de;
+  --sidebar-bg: #ddd8d1;
+  --glass-surface: rgba(0, 0, 0, 0.018);
+  --glass-surface-hover: rgba(0, 0, 0, 0.04);
+  --glass-border: rgba(0, 0, 0, 0.07);
+  --glass-border-active: rgba(15, 118, 110, 0.45);
+  --accent: #0f766e;
+  --accent-secondary: #6d28d9;
+  --accent-glow: rgba(15, 118, 110, 0.08);
+  --text-primary: #2d2a26;
+  --text-secondary: #5c5854;
+  --text-muted: #8c8884;
+  --success: #059669;
+  --danger: #dc2626;
+  --warning: #b45309;
+  --body-glow-1: rgba(15, 118, 110, 0.025);
+  --body-glow-2: rgba(109, 40, 217, 0.015);
+  --toast-bg: rgba(245,242,238,0.96);
+  --toast-border: rgba(0,0,0,0.08);
+
+  /* Card colors — soft pastel, postal paper */
+  --card-narrative: linear-gradient(135deg, rgba(231,229,228,0.75), rgba(254,243,199,0.5));
+  --card-narrative-border: rgba(168,162,158,0.2);
+  --card-checkin: linear-gradient(135deg, rgba(224,231,243,0.75), rgba(207,232,250,0.5));
+  --card-checkin-border: rgba(148,163,184,0.2);
+  --card-character: linear-gradient(135deg, rgba(224,231,255,0.7), rgba(241,245,249,0.5));
+  --card-character-border: rgba(165,180,252,0.18);
+  --card-radar: linear-gradient(135deg, rgba(237,233,254,0.7), rgba(243,232,255,0.5));
+  --card-radar-border: rgba(196,181,253,0.18);
+  /* Radar chart */
+  --radar-stroke: #3d7a8a;
+  --radar-fill: rgba(61,122,138,0.18);
+  --radar-grid: rgba(0,0,0,0.06);
+  --radar-axis-tick: #5c5854;
+  --radar-radius-tick: #787470;
+  --radar-tier-high: #2d6b6b;
+  --radar-tier-high-bg: rgba(45,107,107,0.06);
+  --radar-tier-high-border: rgba(45,107,107,0.15);
+  --radar-tier-mid: #6b5b8a;
+  --radar-tier-mid-bg: rgba(107,91,138,0.05);
+  --radar-tier-mid-border: rgba(107,91,138,0.12);
+  --radar-tier-low: #787470;
+  --radar-tier-low-bg: rgba(120,116,112,0.03);
+  --radar-tier-low-border: rgba(120,116,112,0.08);
+  --radar-score-9: #2d6b6b;
+  --radar-score-7: #6b5b8a;
+  --radar-score-0: #787470;
+  --radar-dim-name: #3d3a36;
+  --radar-dim-desc: #575350;
+  --radar-dim-bar-bg: rgba(0,0,0,0.04);
+  --card-tasks: linear-gradient(135deg, rgba(209,250,229,0.7), rgba(220,252,231,0.5));
+  --card-tasks-border: rgba(110,231,183,0.18);
+  /* GuidePage */
+  --card-guide-dashboard: linear-gradient(135deg, rgba(226,232,240,0.7), rgba(241,245,249,0.5));
+  --card-guide-activities: linear-gradient(135deg, rgba(237,233,254,0.7), rgba(245,243,255,0.5));
+  --card-guide-achievements: linear-gradient(135deg, rgba(254,243,199,0.65), rgba(255,251,235,0.5));
+  --card-guide-quests: linear-gradient(135deg, rgba(255,228,230,0.65), rgba(255,241,242,0.5));
+  --card-guide-outsource: linear-gradient(135deg, rgba(209,250,229,0.7), rgba(236,253,243,0.5));
+  --card-guide-study: linear-gradient(135deg, rgba(224,242,254,0.7), rgba(240,249,255,0.5));
+  --card-guide-stats: linear-gradient(135deg, rgba(255,237,213,0.65), rgba(255,247,237,0.5));
+  --card-guide-reports: linear-gradient(135deg, rgba(252,231,243,0.65), rgba(253,242,248,0.5));
+  --card-guide-profile: linear-gradient(135deg, rgba(224,231,255,0.7), rgba(238,242,255,0.5));
+  --card-guide-border: rgba(0,0,0,0.07);
+  /* Profile page */
+  --card-profile-apikey: linear-gradient(135deg, rgba(224,242,254,0.7), rgba(240,249,255,0.5));
+  --card-profile-apikey-border: rgba(14,116,144,0.15);
+  --card-profile-feishu: linear-gradient(135deg, rgba(237,233,254,0.7), rgba(245,243,255,0.5));
+  --card-profile-feishu-border: rgba(139,92,246,0.15);
+  --card-profile-export: linear-gradient(135deg, rgba(254,243,199,0.65), rgba(255,251,235,0.5));
+  --card-profile-export-border: rgba(180,83,9,0.15);
+  --card-profile-self: linear-gradient(135deg, rgba(224,231,255,0.7), rgba(238,242,255,0.5));
+  --card-profile-self-border: rgba(99,102,241,0.15);
+  --card-profile-radar: linear-gradient(135deg, rgba(209,250,229,0.7), rgba(236,253,243,0.5));
+  --card-profile-radar-border: rgba(20,184,166,0.15);
+  /* Feature pages */
+  --card-outsource: linear-gradient(135deg, rgba(254,243,199,0.65), rgba(255,251,235,0.5));
+  --card-outsource-border: rgba(180,83,9,0.15);
+  --card-study: linear-gradient(135deg, rgba(224,242,254,0.7), rgba(240,249,255,0.5));
+  --card-study-border: rgba(14,116,144,0.15);
+  /* Year heatmap */
+  --heatmap-empty: rgba(0,0,0,0.05);
+  --heatmap-l1: rgba(79,70,229,0.18);
+  --heatmap-l2: rgba(79,70,229,0.42);
+  --heatmap-l3: rgba(79,70,229,0.68);
+  --heatmap-l4: rgba(79,70,229,0.90);
+  --heatmap-today-ring: rgba(79,70,229,0.60);
+}
+
+/* ====== Light-theme component overrides ====== */
+
+/* Cards — flip white-transparent to black-transparent */
+[data-theme="light"] .bg-white\/\[0\.02\] { background: rgba(0,0,0,0.02); }
+[data-theme="light"] .bg-white\/\[0\.03\] { background: rgba(0,0,0,0.04); }
+[data-theme="light"] .bg-white\/\[0\.04\] { background: rgba(0,0,0,0.06); }
+[data-theme="light"] .bg-white\/\[0\.06\] { background: rgba(0,0,0,0.06); }
+[data-theme="light"] .bg-white\/\[0\.08\] { background: rgba(0,0,0,0.08); }
+[data-theme="light"] .bg-white\/2 { background: rgba(0,0,0,0.015); }
+[data-theme="light"] .bg-white\/3 { background: rgba(0,0,0,0.02); }
+[data-theme="light"] .hover\:bg-white\/2:hover { background: rgba(0,0,0,0.02); }
+[data-theme="light"] .hover\:bg-white\/3:hover { background: rgba(0,0,0,0.03); }
+[data-theme="light"] .hover\:bg-white\/\[0\.02\]:hover { background: rgba(0,0,0,0.02); }
+
+/* Borders — flip white-transparent to black-transparent */
+[data-theme="light"] .border-white\/\[0\.04\] { border-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .border-white\/\[0\.05\] { border-color: rgba(0,0,0,0.10); }
+[data-theme="light"] .border-white\/\[0\.06\] { border-color: rgba(0,0,0,0.12); }
+[data-theme="light"] .border-white\/\[0\.08\] { border-color: rgba(0,0,0,0.14); }
+[data-theme="light"] .border-white\/\[0\.12\] { border-color: rgba(0,0,0,0.16); }
+[data-theme="light"] .border-white\/\[0\.15\] { border-color: rgba(0,0,0,0.18); }
+
+/* ====== Text colors — comprehensive light-theme overrides ====== */
+
+/* --- Slate/grey scale (darker for light bg readability) --- */
+[data-theme="light"] .text-slate-200 { color: #2d2a26; }
+[data-theme="light"] .text-slate-300 { color: #3d3a36; }
+[data-theme="light"] .text-slate-400 { color: #4a4642; }
+[data-theme="light"] .text-slate-500 { color: #575350; }
+[data-theme="light"] .text-slate-600 { color: #787470; }
+[data-theme="light"] .text-slate-700 { color: #999590; }
+[data-theme="light"] .text-slate-800 { color: #b5b0aa; }
+[data-theme="light"] .text-slate-200\/90 { color: #2d2a26; }
+[data-theme="light"] .text-slate-400\/80 { color: rgba(74,70,66,0.85); }
+/* Tooltip exemption — keep light text on dark tooltip bg */
+[data-theme="light"] [style*="rgba(10,10,24"] .text-slate-200,
+[data-theme="light"] [class*="z-\[9999\]"].text-slate-200 { color: #e2e8f0; }
+/* prose-specific */
+[data-theme="light"] .prose-p\:text-slate-300 { color: #4a4642; }
+[data-theme="light"] .prose-li\:text-slate-300 { color: #4a4642; }
+[data-theme="light"] .prose-td\:text-slate-300 { color: #4a4642; }
+[data-theme="light"] .prose-code\:text-cyan-400\/80 { color: rgba(15,118,110,0.85); }
+
+/* --- Cyan/teal accent --- */
+[data-theme="light"] .text-cyan-200 { color: #115e59; }
+[data-theme="light"] .text-cyan-300 { color: #0f766e; }
+[data-theme="light"] .text-cyan-400 { color: #0e7490; }
+[data-theme="light"] .text-cyan-300\/70 { color: rgba(15,118,110,0.75); }
+[data-theme="light"] .text-cyan-400\/60 { color: rgba(14,116,144,0.7); }
+[data-theme="light"] .text-cyan-400\/80 { color: rgba(14,116,144,0.85); }
+[data-theme="light"] .bg-cyan-500\/8 { background: rgba(15,118,110,0.06); }
+[data-theme="light"] .bg-cyan-500\/10 { background: rgba(15,118,110,0.08); }
+[data-theme="light"] .bg-cyan-500\/15 { background: rgba(15,118,110,0.12); }
+[data-theme="light"] .bg-cyan-500\/\[0\.06\] { background: rgba(15,118,110,0.05); }
+[data-theme="light"] .border-cyan-500\/15 { border-color: rgba(15,118,110,0.15); }
+[data-theme="light"] .border-cyan-500\/20 { border-color: rgba(15,118,110,0.2); }
+[data-theme="light"] .border-cyan-500\/25 { border-color: rgba(15,118,110,0.22); }
+
+/* --- Violet/purple --- */
+[data-theme="light"] .text-violet-200 { color: #5b21b6; }
+[data-theme="light"] .text-violet-300 { color: #6d28d9; }
+[data-theme="light"] .text-violet-400 { color: #7c3aed; }
+[data-theme="light"] .text-violet-300\/70 { color: rgba(109,40,217,0.75); }
+[data-theme="light"] .text-violet-300\/80 { color: rgba(109,40,217,0.85); }
+[data-theme="light"] .text-violet-400\/50 { color: rgba(124,58,237,0.6); }
+[data-theme="light"] .text-violet-400\/60 { color: rgba(124,58,237,0.7); }
+[data-theme="light"] .bg-violet-500\/8 { background: rgba(109,40,217,0.06); }
+[data-theme="light"] .bg-violet-500\/\[0\.04\] { background: rgba(109,40,217,0.04); }
+[data-theme="light"] .bg-violet-500\/\[0\.08\] { background: rgba(109,40,217,0.07); }
+[data-theme="light"] .border-violet-500\/15 { border-color: rgba(109,40,217,0.15); }
+[data-theme="light"] .border-violet-500\/20 { border-color: rgba(109,40,217,0.2); }
+[data-theme="light"] .border-violet-500\/25 { border-color: rgba(109,40,217,0.22); }
+
+/* --- Emerald/green --- */
+[data-theme="light"] .text-emerald-400 { color: #047857; }
+[data-theme="light"] .text-emerald-300 { color: #059669; }
+[data-theme="light"] .text-emerald-400\/50 { color: rgba(4,120,87,0.6); }
+[data-theme="light"] .text-emerald-400\/60 { color: rgba(4,120,87,0.7); }
+[data-theme="light"] .text-emerald-400\/70 { color: rgba(4,120,87,0.78); }
+[data-theme="light"] .text-emerald-500\/60 { color: rgba(5,150,105,0.7); }
+[data-theme="light"] .bg-emerald-500\/8 { background: rgba(4,120,87,0.06); }
+[data-theme="light"] .bg-emerald-500\/10 { background: rgba(4,120,87,0.08); }
+[data-theme="light"] .border-emerald-500\/15 { border-color: rgba(4,120,87,0.15); }
+[data-theme="light"] .border-emerald-500\/20 { border-color: rgba(4,120,87,0.2); }
+
+/* --- Rose/red --- */
+[data-theme="light"] .text-rose-200 { color: #b91c1c; }
+[data-theme="light"] .text-rose-300 { color: #dc2626; }
+[data-theme="light"] .text-rose-400 { color: #e11d48; }
+
+/* --- Amber/gold --- */
+[data-theme="light"] .text-amber-200 { color: #92400e; }
+[data-theme="light"] .text-amber-300 { color: #b45309; }
+[data-theme="light"] .text-amber-400 { color: #c2410c; }
+[data-theme="light"] .text-amber-300\/60 { color: rgba(180,83,9,0.7); }
+[data-theme="light"] .text-amber-400\/60 { color: rgba(194,65,12,0.7); }
+[data-theme="light"] .text-amber-400\/70 { color: rgba(194,65,12,0.78); }
+[data-theme="light"] .text-amber-400\/80 { color: rgba(194,65,12,0.85); }
+[data-theme="light"] .text-amber-400\/90 { color: rgba(194,65,12,0.93); }
+[data-theme="light"] .bg-amber-500\/8 { background: rgba(180,83,9,0.06); }
+[data-theme="light"] .bg-amber-500\/10 { background: rgba(180,83,9,0.08); }
+[data-theme="light"] .border-amber-500\/10 { border-color: rgba(180,83,9,0.1); }
+[data-theme="light"] .border-amber-500\/15 { border-color: rgba(180,83,9,0.15); }
+[data-theme="light"] .border-amber-500\/20 { border-color: rgba(180,83,9,0.2); }
+
+/* --- Indigo --- */
+[data-theme="light"] .text-indigo-400 { color: #4338ca; }
+
+/* --- Sky --- */
+[data-theme="light"] .text-sky-400 { color: #0369a1; }
+
+/* --- Pink --- */
+[data-theme="light"] .text-pink-400 { color: #db2777; }
+[data-theme="light"] .bg-pink-500\/10 { background: rgba(219,39,119,0.08); }
+
+/* --- Orange --- */
+[data-theme="light"] .text-orange-400 { color: #c2410c; }
+
+/* text-*-100/70 — light-on-dark accent text (used in narrative, etc.) */
+[data-theme="light"] .text-amber-100\/70 { color: rgba(120,53,15,0.82); }
+
+/* ====== GuidePage card titles (text-*-100/80 → dark saturated) ====== */
+[data-theme="light"] .text-violet-100\/80 { color: rgba(91,33,182,0.88); }
+[data-theme="light"] .text-amber-100\/80 { color: rgba(146,64,14,0.88); }
+[data-theme="light"] .text-rose-100\/80 { color: rgba(190,18,60,0.88); }
+[data-theme="light"] .text-emerald-100\/80 { color: rgba(6,95,70,0.88); }
+[data-theme="light"] .text-sky-100\/80 { color: rgba(7,89,133,0.88); }
+[data-theme="light"] .text-orange-100\/80 { color: rgba(154,52,18,0.88); }
+[data-theme="light"] .text-pink-100\/80 { color: rgba(190,24,93,0.88); }
+[data-theme="light"] .text-indigo-100\/80 { color: rgba(55,48,163,0.88); }
+/* card sub-text */
+[data-theme="light"] .text-cyan-100\/80 { color: rgba(22,78,99,0.88); }
+
+/* Sidebar border in light mode */
+[data-theme="light"] aside { border-right-color: rgba(0,0,0,0.07); }
+
+/* Scrollbar in light mode */
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); }
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.18); }
+
+/* ====== Hover text overrides ====== */
+[data-theme="light"] .hover\:text-white\/60:hover { color: #5c5854; }
+[data-theme="light"] .hover\:text-white\/80:hover { color: #3d3a36; }
+[data-theme="light"] .hover\:text-slate-300:hover { color: #4a4642; }
+[data-theme="light"] .hover\:text-slate-400:hover { color: #5c5854; }
+[data-theme="light"] .hover\:text-slate-600:hover { color: #8c8884; }
+[data-theme="light"] .hover\:text-cyan-200:hover { color: #115e59; }
+[data-theme="light"] .hover\:text-cyan-300:hover { color: #0f766e; }
+[data-theme="light"] .hover\:text-cyan-400:hover { color: #0e7490; }
+[data-theme="light"] .hover\:text-rose-300:hover { color: #dc2626; }
+[data-theme="light"] .hover\:text-rose-400:hover { color: #e11d48; }
+[data-theme="light"] .hover\:text-violet-400:hover { color: #7c3aed; }
+[data-theme="light"] .hover\:bg-cyan-500\/15:hover { background: rgba(15,118,110,0.1); }
+[data-theme="light"] .hover\:bg-cyan-500\/20:hover { background: rgba(15,118,110,0.15); }
+[data-theme="light"] .hover\:bg-cyan-500\/25:hover { background: rgba(15,118,110,0.18); }
+[data-theme="light"] .hover\:bg-violet-500\/20:hover { background: rgba(109,40,217,0.15); }
+
+/* ====== Remaining white-text overrides ====== */
+[data-theme="light"] .text-white\/60 { color: #5c5854; }
+[data-theme="light"] .text-white\/50 { color: #6b6763; }
+[data-theme="light"] .text-white\/30 { color: #8c8884; }
+[data-theme="light"] .placeholder\:text-slate-600::placeholder { color: #8c8884; }
+
+/* ====== Tailwind prose blanket fix ====== */
+[data-theme="light"] .prose { color: #3d3a36; }
+[data-theme="light"] .prose :where(p, li, td, th, blockquote) { color: #3d3a36; }
+[data-theme="light"] .prose :where(h1, h2, h3, h4) { color: #1c1917; }
+[data-theme="light"] .prose :where(code) { color: #0e7490; }
+[data-theme="light"] .prose :where(strong) { color: #2d2a26; }
+[data-theme="light"] .prose :where(a) { color: #0e7490; }
+[data-theme="light"] .\[_\&_blockquote\]\:text-slate-400 blockquote { color: #5c5854; }
+
+/* Glass divider line in light mode */
+[data-theme="light"] .bg-gradient-to-r.from-transparent.via-white\/8 { --tw-gradient-stops: transparent, rgba(0,0,0,0.08); }
+
+/* Shimmer in light mode */
+[data-theme="light"] .shimmer {
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.02), transparent);
+}
+
+/* Phone frame shadow — lighter in light mode */
+[data-theme="light"] .shadow-\[0_0_80px_rgba\(0\,0\,0\,0\.6\)\,0_0_0_2px_rgba\(255\,255\,255\,0\.03\)\] {
+  box-shadow: 0 0 60px rgba(0,0,0,0.12), 0 0 0 2px rgba(0,0,0,0.04);
+}
+
+/* Mobile phone bg */
+[data-theme="light"] .bg-\[\#060610\]\/90 { background: rgba(232,228,222,0.9); }
+
+/* Rich text content — ensure readability */
+[data-theme="light"] .prose { color: #2d2a26; }
+[data-theme="light"] .prose h1, [data-theme="light"] .prose h2, [data-theme="light"] .prose h3 { color: #1c1917; }
+
+/* ====== Critical: white text → dark text in light mode ====== */
+[data-theme="light"] .text-white { color: #1c1917; }
+[data-theme="light"] .text-white\/90 { color: #1c1917; }
+[data-theme="light"] .text-white\/85 { color: #292524; }
+[data-theme="light"] .text-white\/80 { color: #3d3a36; }
+[data-theme="light"] .text-white\/70 { color: #4a4642; }
+[data-theme="light"] .text-white\/60 { color: #5c5854; }
+[data-theme="light"] .text-white\/40 { color: #8c8884; }
+[data-theme="light"] .text-white\/30 { color: #a8a5a0; }
+/* Tooltip exemption — keep white text on dark tooltip bg */
+[data-theme="light"] [style*="rgba(10,10,24"] .text-white,
+[data-theme="light"] [style*="rgba(10,10,24"] .text-white\/90 { color: #e2e8f0; }
+[data-theme="light"] .bg-white\/\[0\.08\] { background: rgba(0,0,0,0.05); }
+[data-theme="light"] .bg-white\/\[0\.05\] { background: rgba(0,0,0,0.035); }
+[data-theme="light"] .bg-black\/80 { background: rgba(255,255,255,0.85); }
+[data-theme="light"] .bg-black\/60 { background: rgba(255,255,255,0.7); }
+/* Hover states */
+[data-theme="light"] .hover\:bg-white\/\[0\.04\]:hover { background: rgba(0,0,0,0.03); }
+[data-theme="light"] .hover\:bg-white\/\[0\.05\]:hover { background: rgba(0,0,0,0.04); }
+[data-theme="light"] .hover\:bg-white\/\[0\.08\]:hover { background: rgba(0,0,0,0.06); }
+[data-theme="light"] .hover\:text-slate-300:hover { color: #4a4642; }
+[data-theme="light"] .hover\:text-slate-400:hover { color: #5c5854; }
+[data-theme="light"] .hover\:text-rose-300:hover { color: #ef4444; }
+/* Focus states */
+[data-theme="light"] .focus\:border-cyan-400\/40:focus { border-color: rgba(15,118,110,0.5); }
+
+/* Hover states: cyan */
+[data-theme="light"] .hover\:text-cyan-300:hover { color: #14b8a6; }
+[data-theme="light"] .hover\:bg-cyan-500\/15:hover { background: rgba(15,118,110,0.1); }
+
+/* Active nav item — already handled by cyan overrides above */
 
 body {
   font-family: 'Space Grotesk', 'Noto Sans SC', system-ui, sans-serif;
@@ -47,8 +433,8 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0, 229, 255, 0.04), transparent),
-    radial-gradient(ellipse 40% 40% at 100% 100%, rgba(167, 139, 250, 0.03), transparent);
+    radial-gradient(ellipse 60% 50% at 50% 0%, var(--body-glow-1), transparent),
+    radial-gradient(ellipse 40% 40% at 100% 100%, var(--body-glow-2), transparent);
 }
 
 /* Glass card base */
@@ -194,6 +580,14 @@ body::before {
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
+
+/* Badge click particle burst */
+@keyframes badgeParticle0 { to { transform: translate(-8px, -20px) scale(0); opacity: 0; } }
+@keyframes badgeParticle1 { to { transform: translate(14px, -14px) scale(0); opacity: 0; } }
+@keyframes badgeParticle2 { to { transform: translate(-16px, 8px) scale(0); opacity: 0; } }
+@keyframes badgeParticle3 { to { transform: translate(10px, 18px) scale(0); opacity: 0; } }
+@keyframes badgeParticle4 { to { transform: translate(20px, 6px) scale(0); opacity: 0; } }
+@keyframes badgeParticle5 { to { transform: translate(-12px, -8px) scale(0); opacity: 0; } }
 
 /* Glass divider */
 .divider-dot {

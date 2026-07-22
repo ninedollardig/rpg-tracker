@@ -2,24 +2,25 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { ListFilter } from 'lucide-react';
 import { useActivities, useActivityTypes } from '../hooks/useActivities';
+import { useCharacterContext } from '../context/CharacterContext';
 import ActivityForm from '../components/activities/ActivityForm';
 import ActivityList from '../components/activities/ActivityList';
 import Dropdown from '../components/ui/Dropdown';
-import LevelUpEffect from '../components/effects/LevelUpEffect';
 import TitleUnlockEffect from '../components/effects/TitleUnlockEffect';
 
 export default function ActivitiesPage() {
   const [filters, setFilters] = useState({ days: '7' });
   const [timeFilter, setTimeFilter] = useState('7');
-  const [levelUpData, setLevelUpData] = useState(null);
   const [newTitle, setNewTitle] = useState(null);
   const { activities, total, loading, refetch, logActivity, removeActivity } = useActivities(filters);
+  const { refetch: refetchChar, triggerLevelUp } = useCharacterContext();
   const { types, loading: typesLoading } = useActivityTypes();
 
   const handleLog = async (body) => {
     try {
       const result = await logActivity(body);
       await refetch();
+      refetchChar(); // 同步刷新角色等级/EXP
 
       toast.success(`+${result.exp_earned} EXP!`, {
         description: `${result.activity.name_zh} ${result.activity.value}${result.activity.unit}`,
@@ -27,10 +28,7 @@ export default function ActivitiesPage() {
       });
 
       if (result.level_up) {
-        setLevelUpData({
-          level: result.level_up.to,
-          title: result.level_up.new_title,
-        });
+        triggerLevelUp({ level: result.level_up.to, title: result.level_up.new_title });
       }
 
       if (result.new_achievements?.length) {
@@ -117,12 +115,6 @@ export default function ActivitiesPage() {
 
       <ActivityList activities={activities} loading={loading} onDelete={handleDelete} />
 
-      <LevelUpEffect
-        show={!!levelUpData}
-        level={levelUpData?.level}
-        title={levelUpData?.title}
-        onDone={() => setLevelUpData(null)}
-      />
       <TitleUnlockEffect
         show={!!newTitle}
         title={newTitle}

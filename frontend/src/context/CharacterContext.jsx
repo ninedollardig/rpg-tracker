@@ -6,6 +6,7 @@ const CharacterContext = createContext(null);
 export function CharacterProvider({ children }) {
   const [character, setCharacter] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [levelUpEvent, setLevelUpEvent] = useState(null); // { level, title } or null
 
   const refetch = useCallback(async () => {
     setLoading(true);
@@ -25,8 +26,16 @@ export function CharacterProvider({ children }) {
     return result;
   };
 
+  const triggerLevelUp = useCallback((opts) => {
+    const lvl = opts?.level ?? character?.level;
+    const ttl = opts?.title ?? character?.title;
+    if (lvl != null) {
+      setLevelUpEvent({ level: lvl, title: ttl });
+    }
+  }, [character]);
+
   return (
-    <CharacterContext.Provider value={{ character, loading, refetch, updateName }}>
+    <CharacterContext.Provider value={{ character, loading, refetch, updateName, levelUpEvent, triggerLevelUp, clearLevelUp: () => setLevelUpEvent(null) }}>
       {children}
     </CharacterContext.Provider>
   );

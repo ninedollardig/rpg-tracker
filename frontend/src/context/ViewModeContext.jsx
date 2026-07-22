@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { playSoundGlobal } from '../hooks/useSound';
 
 const ViewModeContext = createContext();
 
@@ -23,10 +24,11 @@ export function ViewModeProvider({ children }) {
 
   const toggleViewMode = useCallback(() => {
     setViewMode(prev => prev === 'desktop' ? 'mobile' : 'desktop');
+    playSoundGlobal('mode');
   }, []);
 
-  const goMobilePage = useCallback((path) => setMobilePage(path), []);
-  const goMobileHome = useCallback(() => setMobilePage(null), []);
+  const goMobilePage = useCallback((path) => { playSoundGlobal('pop'); setMobilePage(path); }, []);
+  const goMobileHome = useCallback(() => { playSoundGlobal('click'); setMobilePage(null); }, []);
 
   return (
     <ViewModeContext.Provider value={{

@@ -78,6 +78,9 @@ export default function StudyMaterialInput({ onSubmit, loading }) {
           <textarea value={material} onChange={e => { setMaterial(e.target.value); setFileName(''); }}
             placeholder="粘贴学习材料到这里，或点击下方上传文件..."
             rows={10} className={inputClass + ' resize-none'} />
+          <p className="text-[10px] text-slate-600 mt-1.5 leading-relaxed">
+            💡 提示：目前仅支持文字内容粘贴，粘贴内容中的图片不会被解析。如需图片内容，请手动输入文字描述。
+          </p>
           {/* Char count + warning */}
           {material.length > 0 && (
             <div className="flex items-center gap-2 mt-1.5">

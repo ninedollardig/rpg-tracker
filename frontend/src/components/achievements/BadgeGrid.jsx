@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import BadgeSVG from './BadgeSVG';
 import { useViewMode } from '../../context/ViewModeContext';
+import useSound from '../../hooks/useSound';
 
 const TIER_LABELS = {
   common: '铜',
@@ -26,7 +27,9 @@ const CAT_COLORS = {
 
 export default function BadgeGrid({ achievements, loading, equippedBadgeId, onEquip }) {
   const [equipping, setEquipping] = useState(null);
+  const [clickedId, setClickedId] = useState(null);
   const { viewMode } = useViewMode();
+  const { playSound } = useSound();
   const isMobile = viewMode === 'mobile';
 
   // Group by tier
@@ -51,6 +54,10 @@ export default function BadgeGrid({ achievements, loading, equippedBadgeId, onEq
 
   const handleEquip = async (ach) => {
     if (!ach.unlocked) return;
+    playSound('pop');
+    // Trigger click particle effect
+    setClickedId(ach.id);
+    setTimeout(() => setClickedId(null), 700);
     setEquipping(ach.id);
     try {
       await onEquip(ach.id);
@@ -121,7 +128,7 @@ export default function BadgeGrid({ achievements, loading, equippedBadgeId, onEq
                     <div className={`font-semibold tracking-wide ${isMobile ? 'text-[11px] mt-1.5' : 'text-sm mt-2.5'} ${
                       ach.unlocked ? 'text-white/70' : 'text-slate-700'
                     }`}>
-                      {isMobile ? ach.name_zh.slice(0, 4) : ach.name_zh}
+                      {isMobile ? ach.name_zh.slice(0, 6) : ach.name_zh}
                     </div>
 
                     {/* Description */}
@@ -140,6 +147,26 @@ export default function BadgeGrid({ achievements, loading, equippedBadgeId, onEq
                     {ach.unlocked && !isEquipped && (
                       <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
                         <span className="text-xs text-cyan-400 font-mono">点击佩戴</span>
+                      </div>
+                    )}
+
+                    {/* Click effect — ring ripple + glow */}
+                    {clickedId === ach.id && (
+                      <div className="absolute inset-0 rounded-2xl pointer-events-none">
+                        <div className="absolute inset-0 rounded-2xl animate-ping bg-cyan-400/10" />
+                        <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_30px_rgba(0,229,255,0.2)]" />
+                        {/* Floating particles */}
+                        {[...Array(6)].map((_, i) => (
+                          <span
+                            key={i}
+                            className="absolute w-1 h-1 rounded-full bg-cyan-400"
+                            style={{
+                              left: `${30 + Math.random() * 40}%`,
+                              top: `${30 + Math.random() * 40}%`,
+                              animation: `badgeParticle${i} 0.6s ease-out forwards`,
+                            }}
+                          />
+                        ))}
                       </div>
                     )}
                   </div>

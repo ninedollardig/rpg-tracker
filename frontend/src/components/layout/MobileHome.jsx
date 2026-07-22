@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { Sword, Activity, Trophy, Target, BarChart3, Send, User, GraduationCap, Newspaper, LogOut, Flame, HelpCircle } from 'lucide-react';
+import { Sword, Activity, Trophy, Target, BarChart3, Send, User, GraduationCap, Newspaper, LogOut, Flame, HelpCircle, Sun, Moon } from 'lucide-react';
 import { useCharacterContext } from '../../context/CharacterContext';
 import { useAuth } from '../../context/AuthContext';
 import { useViewMode } from '../../context/ViewModeContext';
+import useSound from '../../hooks/useSound';
+import { useTheme } from '../../context/ThemeContext';
 import { getStreakFlame } from '../../lib/streak';
 
 const navItems = [
@@ -22,6 +24,8 @@ export default function MobileHome() {
   const { character } = useCharacterContext();
   const { logout } = useAuth();
   const { goMobilePage } = useViewMode();
+  const { theme, toggleTheme } = useTheme();
+  const { playSound } = useSound();
   const navigate = useNavigate();
 
   const streakFlame = getStreakFlame(character?.streak_days || 0);
@@ -32,14 +36,27 @@ export default function MobileHome() {
   };
 
   const handleLogout = () => {
+    playSound('click');
     logout();
     navigate('/login');
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#060610]">
+    <div className="flex flex-col h-full bg-[var(--glass-bg)]">
       {/* Header */}
-      <div className="px-5 pt-8 pb-4 text-center">
+      <div className="px-5 pt-8 pb-4 text-center relative">
+        {/* Theme toggle — top-right */}
+        <button
+          onClick={toggleTheme}
+          className={`absolute top-8 right-5 flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium transition-all duration-300 ${
+            theme === 'dark'
+              ? 'text-amber-400/70 hover:text-amber-300 hover:bg-amber-500/8'
+              : 'text-slate-500 hover:text-slate-600 hover:bg-slate-500/8'
+          }`}
+        >
+          {theme === 'dark' ? <Sun size={13} /> : <Moon size={13} />}
+          <span className="tracking-wider font-mono">{theme === 'dark' ? '浅色' : '深色'}</span>
+        </button>
         <div className="flex justify-center mb-3">
           <svg viewBox="0 0 88 88" className="w-12 h-12">
             <polygon points="44,6 74,26 44,46" fill="#030308" stroke="#0f1a2e" strokeWidth="0.8" />

@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
+import { useCharacterContext } from '../../context/CharacterContext';
 import { todayWeekday } from './weekTaskConfig';
 import CategoryScoreBar from './CategoryScoreBar';
 import TaskItem from './TaskItem';
 import AddTaskModal from './AddTaskModal';
 import { useViewMode } from '../../context/ViewModeContext';
+import useSound from '../../hooks/useSound';
 
 const CAT_COLORS = {
   '生活': 'text-red-400/60',
@@ -20,6 +22,7 @@ export default function WeekTaskPanel({
   addTask, updateTask, toggleTask, deleteTask,
 }) {
   const [dialogDay, setDialogDay] = useState(null);
+  const { refetch: refetchChar } = useCharacterContext();
   const today = todayWeekday();
 
   const handleAdd = async ({ category, subcategory, content, score }) => {
@@ -44,6 +47,7 @@ export default function WeekTaskPanel({
   const handleToggle = (task) => async () => {
     try {
       const result = await toggleTask(task.id);
+      refetchChar(); // 同步刷新角色 EXP/等级
       if (result?.crit) {
         toast.success(
           <div className="flex flex-col gap-0.5">
@@ -77,6 +81,7 @@ export default function WeekTaskPanel({
   const handleLeftoverToggle = (task) => async () => {
     try {
       const result = await toggleTask(task.id);
+      refetchChar(); // 同步刷新角色 EXP/等级
       if (result?.crit) {
         toast.success(
           <div className="flex flex-col gap-0.5">
@@ -99,14 +104,16 @@ export default function WeekTaskPanel({
   };
 
   const { viewMode } = useViewMode();
+  const { playSound } = useSound();
   const isMobile = viewMode === 'mobile';
 
   return (
     <>
-    <div className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
+    <div className="backdrop-blur-xl rounded-2xl p-5 border"
+      style={{ background: 'var(--card-tasks)', borderColor: 'var(--card-tasks-border)' }}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-baseline gap-2">
-          <h3 className="text-sm font-semibold text-white/80 tracking-wide">本周修炼</h3>
+          <h3 className="text-sm font-semibold text-emerald-100/80 tracking-wide">本周修炼</h3>
           {weekInfo && (
             <span className="text-xs text-slate-500">
               · {weekInfo.month}月 第{weekInfo.weekOfMonth}周
@@ -120,7 +127,8 @@ export default function WeekTaskPanel({
         {WEEKDAYS.map((name, i) => (
           <div key={i} className={isMobile ? 'flex flex-col shrink-0 w-[120px]' : 'flex flex-col min-h-0'}>
             <div
-              className={`text-center text-xs font-medium py-1.5 mb-2 tracking-wide rounded-lg transition-colors ${
+              onClick={() => playSound('click')}
+              className={`text-center text-xs font-medium py-1.5 mb-2 tracking-wide rounded-lg transition-colors cursor-pointer ${
                 i === today
                   ? 'bg-cyan-500/8 text-cyan-400 border border-cyan-500/15'
                   : 'bg-white/[0.02] text-slate-500 border border-white/[0.04]'

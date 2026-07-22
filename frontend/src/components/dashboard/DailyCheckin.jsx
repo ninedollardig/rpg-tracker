@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Sparkles, Flame } from 'lucide-react';
 import { toast } from 'sonner';
 import { apiGet, apiPost } from '../../api/client';
+import { useCharacterContext } from '../../context/CharacterContext';
 import { getStreakFlame } from '../../lib/streak';
+import useSound from '../../hooks/useSound';
 import TitleUnlockEffect from '../effects/TitleUnlockEffect';
 
 export default function DailyCheckin() {
@@ -12,6 +14,8 @@ export default function DailyCheckin() {
   const [checking, setChecking] = useState(false);
   const navigate = useNavigate();
   const [newTitle, setNewTitle] = useState(null);
+  const { refetch: refetchChar } = useCharacterContext();
+  const { playSound } = useSound();
   const streakFlame = getStreakFlame(checkin?.streak || 0);
 
   const fetchStatus = async () => {
@@ -28,7 +32,9 @@ export default function DailyCheckin() {
     setChecking(true);
     try {
       const result = await apiPost('/checkin', {});
+      playSound('success');
       setCheckin({ checked_in: true, ...result });
+      refetchChar(); // 同步刷新角色 EXP/等级
       if (result.conditional_titles?.length) {
         setNewTitle(result.conditional_titles[0]);
       }
@@ -49,13 +55,14 @@ export default function DailyCheckin() {
   if (loading) return null;
 
   return (<>
-    <div className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-2xl p-5">
+    <div className="backdrop-blur-xl rounded-2xl p-5 border"
+      style={{ background: 'var(--card-checkin)', borderColor: 'var(--card-checkin-border)' }}>
       {checkin?.checked_in ? (
         /* Checked in — show streak + fortune */
         <div className="flex items-start gap-4">
           {/* Streak badge — click to view streak details */}
           <button
-            onClick={() => navigate('/stats')}
+            onClick={() => { playSound('click'); navigate('/stats'); }}
             title="查看连续修炼详情"
             className="shrink-0 flex flex-col items-center gap-1 group cursor-pointer hover:opacity-80 transition-opacity"
           >
@@ -80,7 +87,7 @@ export default function DailyCheckin() {
               <Sparkles size={13} className="text-cyan-400" />
               <span className="text-xs text-cyan-400/80 font-medium tracking-wide">今日运势</span>
             </div>
-            <p className="text-sm text-white/70 leading-relaxed italic">
+            <p className="text-sm text-cyan-100/80 leading-relaxed italic">
               {checkin.fortune || '星盘静默，今日宜按自己的节奏前行。'}
             </p>
           </div>
@@ -93,7 +100,7 @@ export default function DailyCheckin() {
               <Sparkles size={18} className="text-cyan-400" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-white/80">新的一天，冒险者</p>
+              <p className="text-sm font-semibold text-cyan-100/90">新的一天，冒险者</p>
               <p className="text-xs text-slate-500">
                 签到获取运势预言 + EXP 奖励
                 {checkin?.streak > 0 && (

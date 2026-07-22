@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
+import useSound from '../../hooks/useSound';
 
 const DURATION = 2800;
 
 export default function TitleUnlockEffect({ show, title, onDone }) {
+  const { playSound } = useSound();
+
   useEffect(() => {
     if (!show) return;
+    playSound('unlock');
     const timer = setTimeout(onDone, DURATION);
     return () => clearTimeout(timer);
   }, [show, onDone]);

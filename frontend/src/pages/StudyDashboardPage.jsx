@@ -50,8 +50,8 @@ export default function StudyDashboardPage() {
 
       {/* New session form */}
       {showNew && (
-        <div className="border border-white/[0.06] rounded-2xl p-6"
-          style={{ background: 'rgba(10,10,18,0.5)' }}>
+        <div className="border rounded-2xl p-6"
+          style={{ background: 'var(--card-study)', borderColor: 'var(--card-study-border)' }}>
           <h3 className="text-sm font-semibold text-white/70 mb-4 flex items-center gap-2">
             <GraduationCap size={15} className="text-cyan-400" /> 新建复习会话
           </h3>
@@ -81,7 +81,7 @@ export default function StudyDashboardPage() {
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-white/70 truncate">{s.title || '未命名'}</p>
+                <p className="text-sm text-white/70 whitespace-normal break-words">{s.title || '未命名'}</p>
                 <div className="flex items-center gap-3 mt-0.5">
                   {s.subject && <span className="text-[11px] text-slate-500">{s.subject}</span>}
                   <span className={`text-[10px] px-1.5 py-0.5 rounded ${statusDot[s.status] ? 'bg-white/[0.03]' : ''}`}

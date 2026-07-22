@@ -6,11 +6,13 @@ import useDailyReports from '../hooks/useDailyReports';
 import { toast } from 'sonner';
 
 function formatDate(dateStr) {
-  const d = new Date(dateStr);
+  // Parse YYYY-MM-DD manually to avoid UTC interpretation of date-only strings
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const date = new Date(y, m - 1, d);
   const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  return `${mm}-${dd} ${weekdays[d.getDay()]}`;
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${mm}-${dd} ${weekdays[date.getDay()]}`;
 }
 
 function EmptyState({ onCreate, onGenerate }) {

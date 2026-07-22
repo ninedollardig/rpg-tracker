@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import useSound from '../../hooks/useSound';
 
 const catConfig = {
   '生活': { color: '#f87171', bg: 'rgba(248,113,113,0.06)', border: 'rgba(248,113,113,0.2)', icon: 'heartbeat' },
@@ -76,6 +77,7 @@ function GeoShape({ icon, color, size = 28 }) {
 }
 
 export default function ActivityForm({ types, loading, onSubmit }) {
+  const { playSound } = useSound();
   const [step, setStep] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
@@ -105,6 +107,7 @@ export default function ActivityForm({ types, loading, onSubmit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedType || !value) return;
+    playSound('success');
     onSubmit({
       activity_type_id: selectedType.id,
       value: parseFloat(value),
@@ -150,7 +153,7 @@ export default function ActivityForm({ types, loading, onSubmit }) {
                 active
                   ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
                   : current
-                  ? 'border border-cyan-500/[0.03]0 text-cyan-400'
+                  ? 'border border-cyan-500/30 text-cyan-400'
                   : 'bg-white/[0.03] text-slate-600 border border-white/[0.05]'
               }`}>
                 {i + 1}
@@ -231,7 +234,7 @@ export default function ActivityForm({ types, loading, onSubmit }) {
                   onClick={() => selectType(t)}
                   className={`flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 text-left ${
                     isSelected
-                      ? 'border-cyan-500/[0.03]0 bg-cyan-500/[0.04] shadow-[0_0_16px_rgba(0,229,255,0.1)]'
+                      ? 'border-cyan-500/30 bg-cyan-500/[0.04] shadow-[0_0_16px_rgba(0,229,255,0.1)]'
                       : 'hover:border-white/[0.1]'
                   }`}
                   style={!isSelected ? { backgroundColor: cfg.bg, borderColor: cfg.border } : {}}

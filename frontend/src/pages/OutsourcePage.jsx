@@ -90,9 +90,10 @@ export default function OutsourcePage() {
       {/* AI Result */}
       {currentTask && currentTask.steps && currentTask.steps.length > 0 && (
         <div
-          className={`bg-[#0a0a14] border border-white/[0.08] rounded-2xl overflow-hidden transition-all duration-500 ${
+          className={`border rounded-2xl overflow-hidden transition-all duration-500 ${
             showResult ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
+          style={{ background: 'var(--card-outsource)', borderColor: 'var(--card-outsource-border)' }}
         >
           {/* Result header */}
           <div className={`${isMobile ? 'px-4 py-3' : 'px-6 py-4'} border-b border-white/[0.06]`}>
@@ -100,7 +101,7 @@ export default function OutsourcePage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1.5">
                   <Sparkles size={15} className="text-cyan-400 shrink-0" />
-                  <h3 className="text-white/80 font-semibold truncate text-sm">{currentTask.title}</h3>
+                  <h3 className={`text-white/80 font-semibold text-sm ${isMobile ? 'whitespace-normal break-words' : 'truncate'}`}>{currentTask.title}</h3>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
                   {currentTask.deadline && (
@@ -212,7 +213,7 @@ export default function OutsourcePage() {
                 }`} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-white/70 truncate">{task.title}</span>
+                    <span className={`text-sm text-white/70 ${isMobile ? 'whitespace-normal break-words' : 'truncate'}`}>{task.title}</span>
                   </div>
                   <div className="flex items-center gap-3 mt-0.5 text-[11px] text-slate-600">
                     <span>{task.created_at?.slice(0, 10)}</span>

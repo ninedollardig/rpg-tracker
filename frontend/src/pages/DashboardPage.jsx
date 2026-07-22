@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useCharacterContext } from '../context/CharacterContext';
-import { apiGet } from '../api/client';
+import { apiGet, apiPut } from '../api/client';
 import CharacterSheet from '../components/dashboard/CharacterSheet';
 import BrainRadar from '../components/charts/BrainRadar';
 import DailyCheckin from '../components/dashboard/DailyCheckin';
@@ -16,6 +16,11 @@ export default function DashboardPage() {
       if (d.radar_scores?.length) setRadarScores(d.radar_scores);
     }).catch(() => {});
   }, []);
+
+  const handleRadarScoreChange = (newScores) => {
+    setRadarScores(newScores);
+    apiPut('/user/settings', { radar_scores: newScores }).catch(() => {});
+  };
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-12">
@@ -37,7 +42,7 @@ export default function DashboardPage() {
           <CharacterSheet character={character} loading={charLoading} />
         </div>
         <div className="lg:col-span-7">
-          <BrainRadar compact customDimensions={radarScores} />
+          <BrainRadar compact customDimensions={radarScores} editable onScoreChange={handleRadarScoreChange} />
         </div>
       </div>
 

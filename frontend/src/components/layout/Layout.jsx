@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Monitor } from 'lucide-react';
+import { ArrowLeft, Monitor, Sun, Moon } from 'lucide-react';
 import Sidebar from './Sidebar';
 import MobileHome from './MobileHome';
 import { useViewMode } from '../../context/ViewModeContext';
+import { useTheme } from '../../context/ThemeContext';
 
 const WEEKDAY_NAMES = ['日', '一', '二', '三', '四', '五', '六'];
 
@@ -37,7 +38,7 @@ function RingProgress({ pct, ringColor, glowColor }) {
   );
 }
 
-function DayPhaseBar() {
+function DayPhaseBar({ theme, onToggleTheme }) {
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -82,6 +83,19 @@ function DayPhaseBar() {
         </div>
 
         <div className="ml-auto flex items-center gap-2">
+          {/* Theme toggle — inline with phase indicator */}
+          <button
+            onClick={onToggleTheme}
+            title={theme === 'dark' ? '浅色主题' : '深色主题'}
+            className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium transition-all duration-300 ${
+              theme === 'dark'
+                ? 'text-amber-400/70 hover:text-amber-300 hover:bg-amber-500/8'
+                : 'text-slate-500 hover:text-slate-600 hover:bg-slate-500/8'
+            }`}
+          >
+            {theme === 'dark' ? <Sun size={12} /> : <Moon size={12} />}
+            <span className="tracking-wider font-mono uppercase">{theme === 'dark' ? '浅色' : '深色'}</span>
+          </button>
           <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: phase.color, boxShadow: `0 0 6px ${phase.glow}` }} />
           <span className="text-sm font-semibold tracking-[0.15em]"
             style={{ color: phase.color, fontFamily: 'Space Grotesk, Noto Sans SC, sans-serif' }}>
@@ -103,14 +117,15 @@ function DayPhaseBar() {
 
 export default function Layout({ children }) {
   const { viewMode, mobilePage, goMobileHome, toggleViewMode } = useViewMode();
+  const { theme, toggleTheme } = useTheme();
   const isMobile = viewMode === 'mobile';
   const showHome = isMobile && !mobilePage;
 
   if (isMobile) {
     return (
-      <div className="flex h-screen overflow-hidden bg-[#030308] justify-center items-start py-4">
+      <div className="flex h-screen overflow-hidden bg-[var(--glass-bg)] justify-center items-start py-4">
         {/* Phone frame */}
-        <div className="w-full max-w-[430px] h-full max-h-[920px] rounded-[2.5rem] border border-white/[0.06] bg-[#060610] shadow-[0_0_80px_rgba(0,0,0,0.6),0_0_0_2px_rgba(255,255,255,0.03)] overflow-hidden flex flex-col">
+        <div className="w-full max-w-[430px] h-full max-h-[920px] rounded-[2.5rem] border border-white/[0.06] bg-[var(--glass-bg)] shadow-[0_0_80px_rgba(0,0,0,0.6),0_0_0_2px_rgba(255,255,255,0.03)] overflow-hidden flex flex-col">
           {/* Content area */}
           <div className="flex-1 overflow-y-auto">
             {showHome ? (
@@ -118,7 +133,7 @@ export default function Layout({ children }) {
             ) : (
               <>
                 {/* Back button */}
-                <div className="sticky top-0 z-10 bg-[#060610]/90 backdrop-blur-xl border-b border-white/[0.04] px-4 py-3 flex items-center">
+                <div className="sticky top-0 z-10 bg-[var(--glass-bg)]/90 backdrop-blur-xl border-b border-white/[0.04] px-4 py-3 flex items-center">
                   <button
                     onClick={goMobileHome}
                     className="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 transition-all group"
@@ -128,7 +143,7 @@ export default function Layout({ children }) {
                   </button>
                 </div>
                 <div className="px-4 py-3">
-                  <DayPhaseBar />
+                  <DayPhaseBar theme={theme} onToggleTheme={toggleTheme} />
                   {children}
                 </div>
               </>
@@ -161,10 +176,10 @@ export default function Layout({ children }) {
 
   // Desktop mode
   return (
-    <div className="flex h-screen overflow-hidden bg-[#030308]">
+    <div className="flex h-screen overflow-hidden bg-[var(--glass-bg)]">
       <Sidebar />
       <main className="flex-1 overflow-y-auto px-8 py-6">
-        <DayPhaseBar />
+        <DayPhaseBar theme={theme} onToggleTheme={toggleTheme} />
         {children}
       </main>
     </div>

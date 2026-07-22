@@ -118,11 +118,8 @@ export default function ProfilePage() {
 
       {/* API Key */}
       <div
-        className="rounded-2xl p-5"
-        style={{
-          background: 'rgba(10,10,18,0.5)',
-          border: '1px solid rgba(255,255,255,0.06)',
-        }}
+        className="rounded-2xl p-5 border"
+        style={{ background: 'var(--card-profile-apikey)', borderColor: 'var(--card-profile-apikey-border)' }}
       >
         <div className="flex items-center gap-2 mb-4">
           <Key size={15} className="text-cyan-400" />
@@ -152,7 +149,6 @@ export default function ProfilePage() {
                 { id: 'gpt-5.5', label: 'GPT-5.5', desc: 'OpenAI' },
                 { id: 'claude-opus-4-8', label: 'Claude 4.8 Opus', desc: 'Anthropic' },
                 { id: 'gemini-3.1-pro', label: 'Gemini 3.1 Pro', desc: 'Google' },
-                { id: 'deepseek-chat', label: 'DeepSeek V4', desc: 'DeepSeek' },
                 { id: 'llama-4', label: 'Llama 4', desc: 'Meta' },
               ].map(m => (
                 <button
@@ -180,6 +176,7 @@ export default function ProfilePage() {
             <p className="text-[10px] text-slate-600 font-mono tracking-wider uppercase">国内</p>
             <div className="grid grid-cols-2 gap-2">
               {[
+                { id: 'deepseek-chat', label: 'DeepSeek V4', desc: '深度求索' },
                 { id: 'qwen3.5-max', label: 'Qwen3.5 Max', desc: '通义千问' },
                 { id: 'ernie-bot-4.0', label: 'ERNIE Bot 4.0', desc: '文心一言' },
                 { id: 'kimi-k3', label: 'Kimi K3', desc: '月之暗面' },
@@ -217,8 +214,8 @@ export default function ProfilePage() {
 
       {/* Feishu / Lark ID */}
       <div
-        className="rounded-2xl p-5"
-        style={{ background: 'rgba(10,10,18,0.5)', border: '1px solid rgba(255,255,255,0.06)' }}
+        className="rounded-2xl p-5 border"
+        style={{ background: 'var(--card-profile-feishu)', borderColor: 'var(--card-profile-feishu-border)' }}
       >
         <div className="flex items-center gap-2 mb-4">
           <span className="text-base">📨</span>
@@ -258,7 +255,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Export Location */}
-      <div className="rounded-2xl p-5" style={{ background: 'rgba(10,10,18,0.5)', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="rounded-2xl p-5 border" style={{ background: 'var(--card-profile-export)', borderColor: 'var(--card-profile-export-border)' }}>
         <div className="flex items-center gap-2 mb-4">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
           <h3 className="text-sm font-semibold text-white/70">文件导出位置</h3>
@@ -273,11 +270,8 @@ export default function ProfilePage() {
 
       {/* Self Profile */}
       <div
-        className="rounded-2xl p-5"
-        style={{
-          background: 'rgba(10,10,18,0.5)',
-          border: '1px solid rgba(255,255,255,0.06)',
-        }}
+        className="rounded-2xl p-5 border"
+        style={{ background: 'var(--card-profile-self)', borderColor: 'var(--card-profile-self-border)' }}
       >
         <div className="flex items-center gap-2 mb-4">
           <Brain size={15} className="text-cyan-400" />
@@ -310,11 +304,8 @@ export default function ProfilePage() {
       {/* Radar Scores */}
       {radarScores.length > 0 && (
         <div
-          className="rounded-2xl p-5"
-          style={{
-            background: 'rgba(10,10,18,0.5)',
-            border: '1px solid rgba(255,255,255,0.06)',
-          }}
+          className="rounded-2xl p-5 border"
+          style={{ background: 'var(--card-profile-radar)', borderColor: 'var(--card-profile-radar-border)' }}
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-semibold text-white/70">能力雷达数据</h3>

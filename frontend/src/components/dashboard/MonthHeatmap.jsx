@@ -24,8 +24,8 @@ export default function MonthHeatmap({ weeks, currentWeekStart }) {
     <div
       className="rounded-xl p-3 w-fit"
       style={{
-        background: 'rgba(10,10,18,0.35)',
-        border: '1px solid rgba(255,255,255,0.04)',
+        background: 'var(--glass-surface)',
+        border: '1px solid var(--glass-border)',
       }}
     >
       <div className="flex items-center gap-2 mb-2">

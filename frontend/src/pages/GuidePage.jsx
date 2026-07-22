@@ -3,27 +3,26 @@ import { Sword, Activity, Trophy, Target, BarChart3, Send, GraduationCap, Newspa
 
 const GUIDES = [
   {
-    id: 'dashboard',
-    icon: Sword,
-    color: 'text-cyan-400',
-    bg: 'bg-cyan-500/8',
-    border: 'border-cyan-500/15',
+    id: 'dashboard', icon: Sword,
+    cardVar: 'var(--card-guide-dashboard)',
+    cardText: 'text-slate-200/90',
+    accent: 'text-cyan-400', accentBg: 'bg-cyan-500/10', accentBorder: 'border-cyan-500/20',
     title: '角色面板',
-    brief: '你的 RPG 角色主页，查看状态、签到、运势。',
+    brief: '你的 RPG 角色主页，查看状态、签到、运势。点击六边形等级徽章可重播升级特效。',
     input: '无需手动输入。系统自动聚合你的活动数据，每日首次访问弹出签到。',
     logic: '签到 → 计算连续天数 → 生成运势签文（AI 生成并缓存当天）。等级 = 累计 EXP 的平方根函数，属性值 = 各分类活动累加。',
-    output: '角色等级、EXP 进度条、六维属性雷达图、连续修炼天数、每日 AI 运势。',
+    output: '角色等级、EXP 进度条、六维属性雷达图、连续修炼天数、每日 AI 运势。点击等级徽章 → 全屏播放升级动画（白色闪光 → 冲击波 → 旋转六边形 → 粒子飞散）。',
     examples: [
       { q: '签到 7 天连续', a: '连续修炼达到 7 天，解锁「生活节奏」徽章，火焰图标变色。每天运势不同，影响当天气氛。' },
       { q: 'EXP 如何升级', a: '记录活动获得 EXP，累计 100 EXP → Lv2，400 EXP → Lv3，900 EXP → Lv4。等级越高需要的 EXP 越多。' },
+      { q: '升级特效没看到怎么办', a: '升级时如果卡顿跳过了动画，回到角色面板点击六边形等级徽章即可重播全屏升级特效。手机和电脑均支持全屏播放。' },
     ],
   },
   {
-    id: 'activities',
-    icon: Activity,
-    color: 'text-violet-400',
-    bg: 'bg-violet-500/8',
-    border: 'border-violet-500/15',
+    id: 'activities', icon: Activity,
+    cardVar: 'var(--card-guide-activities)',
+    cardText: 'text-violet-100/80',
+    accent: 'text-violet-400', accentBg: 'bg-violet-500/10', accentBorder: 'border-violet-500/20',
     title: '活动记录',
     brief: '记录四类日常活动，每次记录获得经验值。',
     input: '选择活动类型（如「营养素摄入」「硬技能学习」）→ 输入完成次数或数值 → 可选备注。四大分类：生活、学习、娱乐、休息。',
@@ -36,11 +35,10 @@ const GUIDES = [
     ],
   },
   {
-    id: 'achievements',
-    icon: Trophy,
-    color: 'text-amber-400',
-    bg: 'bg-amber-500/8',
-    border: 'border-amber-500/15',
+    id: 'achievements', icon: Trophy,
+    cardVar: 'var(--card-guide-achievements)',
+    cardText: 'text-amber-100/80',
+    accent: 'text-amber-400', accentBg: 'bg-amber-500/10', accentBorder: 'border-amber-500/20',
     title: '成就徽章',
     brief: '达成条件自动解锁徽章，可佩戴一枚展示在角色面板。',
     input: '无需手动操作。系统自动检测你的活动数据是否满足徽章条件。',
@@ -52,11 +50,10 @@ const GUIDES = [
     ],
   },
   {
-    id: 'quests',
-    icon: Target,
-    color: 'text-rose-400',
-    bg: 'bg-rose-500/8',
-    border: 'border-rose-500/15',
+    id: 'quests', icon: Target,
+    cardVar: 'var(--card-guide-quests)',
+    cardText: 'text-rose-100/80',
+    accent: 'text-rose-400', accentBg: 'bg-rose-500/10', accentBorder: 'border-rose-500/20',
     title: '任务',
     brief: '每日 4 项 + 每周 3 项固定任务，完成后获得额外 EXP 奖励。',
     input: '无需手动领取。每日/每周任务自动分配，按你的活动记录自动检测完成。',
@@ -68,11 +65,10 @@ const GUIDES = [
     ],
   },
   {
-    id: 'outsource',
-    icon: Send,
-    color: 'text-emerald-400',
-    bg: 'bg-emerald-500/8',
-    border: 'border-emerald-500/15',
+    id: 'outsource', icon: Send,
+    cardVar: 'var(--card-guide-outsource)',
+    cardText: 'text-emerald-100/80',
+    accent: 'text-emerald-400', accentBg: 'bg-emerald-500/10', accentBorder: 'border-emerald-500/20',
     title: '庶务外包',
     brief: 'AI 帮你把复杂任务拆解为具体可执行的步骤清单。',
     input: '通过 7 步问卷引导输入：① 任务描述「你想外包什么」② 当前进展 ③ 卡点 ④ 可用资源 ⑤ 任务重要性 ⑥ 截止日期及提醒频率。每步选择或填写后自动推进。',
@@ -84,11 +80,10 @@ const GUIDES = [
     ],
   },
   {
-    id: 'study',
-    icon: GraduationCap,
-    color: 'text-sky-400',
-    bg: 'bg-sky-500/8',
-    border: 'border-sky-500/15',
+    id: 'study', icon: GraduationCap,
+    cardVar: 'var(--card-guide-study)',
+    cardText: 'text-sky-100/80',
+    accent: 'text-sky-400', accentBg: 'bg-sky-500/10', accentBorder: 'border-sky-500/20',
     title: '期末复习',
     brief: '三步学习法：结构化笔记 → 深度加工 → 间隔重复。适合备考和深度学习。',
     input: 'Step 1「材料输入」：粘贴学习材料原文（课堂笔记、教材章节、论文均可），填写课程名称。',
@@ -100,11 +95,10 @@ const GUIDES = [
     ],
   },
   {
-    id: 'stats',
-    icon: BarChart3,
-    color: 'text-orange-400',
-    bg: 'bg-orange-500/8',
-    border: 'border-orange-500/15',
+    id: 'stats', icon: BarChart3,
+    cardVar: 'var(--card-guide-stats)',
+    cardText: 'text-orange-100/80',
+    accent: 'text-orange-400', accentBg: 'bg-orange-500/10', accentBorder: 'border-orange-500/20',
     title: '数据统计',
     brief: '所有活动数据的可视化统计与分析。',
     input: '无需手动输入。系统自动聚合你的全部活动记录生成图表。',
@@ -116,11 +110,10 @@ const GUIDES = [
     ],
   },
   {
-    id: 'daily-reports',
-    icon: Newspaper,
-    color: 'text-pink-400',
-    bg: 'bg-pink-500/8',
-    border: 'border-pink-500/15',
+    id: 'daily-reports', icon: Newspaper,
+    cardVar: 'var(--card-guide-reports)',
+    cardText: 'text-pink-100/80',
+    accent: 'text-pink-400', accentBg: 'bg-pink-500/10', accentBorder: 'border-pink-500/20',
     title: '日报',
     brief: '每日总结和反思，手动写或 AI 自动生成。',
     input: '手动模式：自由写当天的总结、收获、反思。自动模式：点击「AI 生成」按钮，系统读取当天所有活动记录和签到信息。',
@@ -132,21 +125,26 @@ const GUIDES = [
     ],
   },
   {
-    id: 'profile',
-    icon: User,
-    color: 'text-indigo-400',
-    bg: 'bg-indigo-500/8',
-    border: 'border-indigo-500/15',
+    id: 'profile', icon: User,
+    cardVar: 'var(--card-guide-profile)',
+    cardText: 'text-indigo-100/80',
+    accent: 'text-indigo-400', accentBg: 'bg-indigo-500/10', accentBorder: 'border-indigo-500/20',
     title: '我的',
     brief: '个人设置中心：API Key、模型选择、飞书账号、自我画像、能力雷达。',
-    input: '① 选择一个模型（海外 5 款：GPT-5.5/Claude 4.8 Opus/Gemini 3.1 Pro/DeepSeek V4/Llama 4；国内 5 款：通义千问/文心一言/Kimi K3/腾讯混元/豆包）② 填入该模型对应的 API Key ③ 可选：飞书 Open ID、Obsidian vault 路径 ④ 自我画像（一段文字描述性格和认知习惯）。',
-    logic: 'API Key + 模型选择 → 庶务外包、日报生成、雷达生成使用你的 Key 调用 AI。未填 Key 则 AI 功能不可用。飞书 ID → 签到/活动/成就通知推送到飞书。自我画像 → AI 分析生成 9 维能力雷达图（逻辑力/创造力/执行力/记忆力/专注力/情绪力/社交力/自驱力/元认知）。Vault 路径 → 学习笔记导出到本地 Obsidian。',
+    input: '① 选择一个模型（海外 4 款：GPT-5.5/Claude 4.8 Opus/Gemini 3.1 Pro/Llama 4；国内 6 款：DeepSeek V4/通义千问/文心一言/Kimi K3/腾讯混元/豆包）② 填入该模型对应的 API Key ③ 可选：飞书 Open ID、Obsidian vault 路径 ④ 自我画像（一段文字描述性格和认知习惯）。',
+    logic: 'API Key + 模型选择 → 庶务外包、日报生成、雷达生成使用你的 Key 调用 AI。未填 Key 则 AI 功能不可用。飞书 ID → 签到/活动/成就通知推送到飞书。自我画像 → AI 分析生成 9 维能力雷达图。Vault 路径 → 学习笔记导出到本地 Obsidian。',
     output: 'AI 生成的能力雷达图（可手动微调分数和描述）。飞书实时通知。笔记本地同步。',
     examples: [
-      { q: '怎么获取 API Key', a: 'DeepSeek：platform.deepseek.com → API Keys。OpenAI：platform.openai.com → API Keys。Claude：console.anthropic.com → API Keys。Google AI Studio：aistudio.google.com → API Key。通义千问：dashscope.aliyun.com。文心一言：console.bce.baidu.com。月之暗面：platform.moonshot.cn。选好模型后填入对应 Key，AI 功能才可用。' },
+      { q: '怎么获取 API Key', a: 'DeepSeek：platform.deepseek.com → API Keys。OpenAI：platform.openai.com → API Keys。Claude：console.anthropic.com → API Keys。Google AI Studio：aistudio.google.com → API Key。通义千问：dashscope.aliyun.com。文心一言：console.bce.baidu.com。月之暗面：platform.moonshot.cn。' },
       { q: '没有 API Key 能用吗', a: 'AI 功能（庶务外包、日报生成、雷达生成）不可用。活动记录、成就徽章、任务追踪、数据统计等不需要 AI 的功能正常使用。' },
     ],
   },
+];
+
+const SECTION_LABELS = [
+  { key: 'input', emoji: '📥', label: '输入 Input', color: 'text-cyan-400' },
+  { key: 'logic', emoji: '⚙️', label: '逻辑 Logic', color: 'text-amber-400' },
+  { key: 'output', emoji: '📤', label: '输出 Output', color: 'text-emerald-400' },
 ];
 
 export default function GuidePage() {
@@ -154,7 +152,6 @@ export default function GuidePage() {
   const [dismissed, setDismissed] = useState({});
 
   const toggle = (id) => setExpanded(prev => prev === id ? null : id);
-
   const dismissExample = (guideId, idx) => {
     setDismissed(prev => ({ ...prev, [`${guideId}-${idx}`]: true }));
   };
@@ -167,7 +164,7 @@ export default function GuidePage() {
       </div>
 
       <p className="text-xs text-slate-500 leading-relaxed">
-        以下介绍每个功能的「输入 → 处理逻辑 → 输出结果」，并附带具体例子。点击标题展开详情，例子可随时关闭。
+        以下介绍每个功能的「输入 → 处理逻辑 → 输出结果」，并附带具体例子。点击标题展开详情。
       </p>
 
       {GUIDES.map(guide => {
@@ -175,53 +172,36 @@ export default function GuidePage() {
         return (
           <div
             key={guide.id}
-            className="rounded-2xl border transition-all duration-200"
-            style={{
-              background: 'rgba(10,10,18,0.5)',
-              borderColor: isOpen ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.06)',
-            }}
+            className="rounded-2xl border backdrop-blur-xl transition-all duration-200"
+            style={{ background: guide.cardVar, borderColor: 'var(--card-guide-border)' }}
           >
-            {/* Header — clickable */}
+            {/* Header */}
             <button
               onClick={() => toggle(guide.id)}
               className="w-full flex items-center gap-3 px-5 py-4 text-left"
             >
-              <div className={`p-2 rounded-xl ${guide.bg} ${guide.border} border`}>
-                <guide.icon size={18} className={guide.color} />
+              <div className={`p-2 rounded-xl border ${guide.accentBg} ${guide.accentBorder}`}>
+                <guide.icon size={18} className={guide.accent} />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-semibold text-white/80">{guide.title}</h3>
-                <p className="text-[11px] text-slate-500 truncate">{guide.brief}</p>
+                <h3 className={`text-sm font-semibold ${guide.cardText}`}>{guide.title}</h3>
+                <p className="text-[11px] text-slate-500 line-clamp-2">{guide.brief}</p>
               </div>
-              {isOpen ? (
-                <ChevronUp size={16} className="text-slate-600 shrink-0" />
-              ) : (
-                <ChevronDown size={16} className="text-slate-600 shrink-0" />
-              )}
+              {isOpen ? <ChevronUp size={16} className="text-slate-500 shrink-0" /> : <ChevronDown size={16} className="text-slate-500 shrink-0" />}
             </button>
 
-            {/* Expanded content */}
+            {/* Expanded */}
             {isOpen && (
-              <div className="px-5 pb-5 space-y-4 border-t border-white/[0.04] pt-4">
-                {/* Input */}
-                <div>
-                  <span className="text-[10px] text-cyan-400 font-mono tracking-wider uppercase">📥 输入 Input</span>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">{guide.input}</p>
-                </div>
+              <div className="px-5 pb-5 space-y-4 border-t border-white/[0.06] pt-4">
+                {SECTION_LABELS.map(sec => (
+                  <div key={sec.key}>
+                    <span className={`text-[10px] ${sec.color} font-mono tracking-wider uppercase`}>
+                      {sec.emoji} {sec.label}
+                    </span>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">{guide[sec.key]}</p>
+                  </div>
+                ))}
 
-                {/* Logic */}
-                <div>
-                  <span className="text-[10px] text-amber-400 font-mono tracking-wider uppercase">⚙️ 逻辑 Logic</span>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">{guide.logic}</p>
-                </div>
-
-                {/* Output */}
-                <div>
-                  <span className="text-[10px] text-emerald-400 font-mono tracking-wider uppercase">📤 输出 Output</span>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">{guide.output}</p>
-                </div>
-
-                {/* Examples */}
                 {guide.examples.length > 0 && (
                   <div>
                     <span className="text-[10px] text-violet-400 font-mono tracking-wider uppercase flex items-center gap-1">
@@ -234,7 +214,7 @@ export default function GuidePage() {
                         return (
                           <div
                             key={key}
-                            className="flex items-start gap-3 px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04] group"
+                            className="flex items-start gap-3 px-3 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] group"
                           >
                             <span className="text-[10px] text-slate-600 font-mono shrink-0 mt-0.5">例{idx + 1}</span>
                             <div className="flex-1 min-w-0">
@@ -244,7 +224,6 @@ export default function GuidePage() {
                             <button
                               onClick={() => dismissExample(guide.id, idx)}
                               className="shrink-0 text-slate-600 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-all"
-                              title="关闭此例"
                             >
                               <X size={12} />
                             </button>

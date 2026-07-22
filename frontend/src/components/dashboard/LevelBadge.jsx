@@ -12,21 +12,26 @@ const TIER_ACCENT = {
   legendary:'#00e5ff',
 };
 
-export default function LevelBadge({ level, title, equippedBadge }) {
+export default function LevelBadge({ level, title, equippedBadge, onClick }) {
   const badgeColor = equippedBadge ? (TIER_ACCENT[equippedBadge.tier] || '#00e5ff') : '#00e5ff';
   const badgeGlow = equippedBadge ? (TIER_GLOW[equippedBadge.tier] || 'rgba(0,229,255,0.4)') : 'rgba(0,229,255,0.25)';
 
   return (
-    <div className="flex flex-col items-center">
+    <div className={`flex flex-col items-center ${onClick ? 'group cursor-pointer' : ''}`} onClick={onClick}>
       {/* Hexagon frame with badge or level */}
-      <div className="relative w-20 h-20 select-none flex items-center justify-center">
+      <div className="relative w-20 h-20 flex items-center justify-center">
+        {/* Click hint glow on hover */}
+        {onClick && (
+          <div className="absolute inset-0 rounded-full bg-cyan-400/0 group-hover:bg-cyan-400/5 transition-all duration-300" />
+        )}
         <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full">
-          {/* Outer hexagon ring */}
+          {/* Outer hexagon ring — pulse on hover when clickable */}
           <polygon
             points="50,8 88,30 88,70 50,92 12,70 12,30"
             fill="none"
             stroke={badgeColor}
             strokeWidth="1.5"
+            className={onClick ? 'group-hover:opacity-70 transition-all duration-300' : ''}
             opacity="0.35"
           />
           {/* Inner hexagon */}
@@ -113,6 +118,13 @@ export default function LevelBadge({ level, title, equippedBadge }) {
       <span className="text-sm font-semibold text-white/70 tracking-wide mt-1.5">
         {title}
       </span>
+
+      {/* Click hint */}
+      {onClick && (
+        <span className="text-[9px] text-slate-600 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+          点击播放升级特效
+        </span>
+      )}
 
       {/* Geometric accent line */}
       <div className="flex items-center gap-1.5 mt-1.5">

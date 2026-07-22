@@ -233,7 +233,7 @@ router.post('/generate', async (req, res) => {
   lines.push('---');
   lines.push('');
   const now = new Date();
-  const timeStr = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  const timeStr = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false });
   lines.push(`*由系统自动生成于 ${reportDate} ${timeStr}*`);
 
   const content = lines.join('\n');

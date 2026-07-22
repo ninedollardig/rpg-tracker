@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useViewMode } from '../../context/ViewModeContext';
 import { useFloatingTooltip } from '../../components/ui/FloatingTooltip';
 import { getStreakFlame } from '../../lib/streak';
+import useSound from '../../hooks/useSound';
 
 const navGroups = [
   {
@@ -39,16 +40,18 @@ export default function Sidebar() {
   const { viewMode, toggleViewMode } = useViewMode();
   const { show, move, hide, TooltipOverlay } = useFloatingTooltip();
   const navigate = useNavigate();
+  const { playSound } = useSound();
 
   const streakFlame = getStreakFlame(character?.streak_days || 0);
 
   const handleLogout = () => {
+    playSound('click');
     logout();
     navigate('/login');
   };
 
   return (
-    <aside className="w-56 flex flex-col shrink-0 border-r border-white/[0.05] bg-black/60 backdrop-blur-2xl">
+    <aside className="w-56 flex flex-col shrink-0 border-r border-white/[0.05] bg-[var(--sidebar-bg)] backdrop-blur-2xl">
       {/* Header */}
       <div className="px-5 pt-6 pb-4">
         {/* Crystalline mark */}
@@ -80,7 +83,7 @@ export default function Sidebar() {
           <div key={group.label} className="space-y-0.5">
             <p className="text-[10px] text-slate-600 font-mono tracking-[0.15em] px-3 mb-1">{group.label}</p>
             {group.items.map(item => (
-              <NavLink key={item.to} to={item.to} end={item.to === '/'}>
+              <NavLink key={item.to} to={item.to} end={item.to === '/'} onClick={() => playSound('pop')}>
                 {({ isActive }) => (
                   <div
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${

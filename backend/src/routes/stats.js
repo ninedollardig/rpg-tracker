@@ -130,13 +130,13 @@ router.get('/trends', async (req, res) => {
 
   const data = rowsToObjects(db.exec(sql, params));
 
-  // Merge weekly task trends (use week_start as date anchor)
+  // Merge weekly task trends (calculate actual date = week_start + weekday)
   const wtTrendSql = `
-    SELECT week_start as date, SUM(score) as exp, category
+    SELECT date(week_start, '+' || weekday || ' days') as date, SUM(score) as exp, category
     FROM weekly_tasks
     WHERE user_id = ? AND completed = 1 AND week_start >= ? AND category != ''
-    GROUP BY week_start, category
-    ORDER BY week_start
+    GROUP BY date, category
+    ORDER BY date
   `;
   const wtTrendParams = [req.userId, sinceStr];
   if (category && category !== 'all') {

@@ -1,5 +1,151 @@
 # RPG Tracker 项目日志
 
+## 2026-07-20 — DESIGN.md 设计规范文件
+
+- 项目根目录新增 `DESIGN.md`，按 Google Stitch 标准格式编写
+- 内容：配色体系（含两套色彩模式 + 9 种语义色）、三字体体系、毛玻璃深度层级、圆角/间距规范、组件定义、动效规则、Do's & Don'ts
+- 包含 Agent Prompt Guide：AI 写新组件时可直接参考的速查 checklist 和生图 prompt 模板
+- 灵感来源：SlashZ斜杠青年Z 的"怎么才能Vibe Code出来漂亮的UI"四集系列
+
+## 2026-07-20 — UI 点击音效 v3：主题/模式/添加任务音效
+
+- 新增 3 个 Kenney UI Audio (CC0) 音效：
+  - theme.wav（switch1）— 主题切换
+  - mode.wav（switch8）— 视图模式切换
+  - add.wav（click4）— 添加周任务
+- `useSound.js` 新增 `playSoundGlobal(name)` 模块级导出，供 Context/非组件环境使用
+- 音效插入点：
+  - 主题切换（ThemeContext.toggleTheme）— theme.wav
+  - 视图模式切换（ViewModeContext.toggleViewMode）— mode.wav
+  - 添加周任务提交（AddTaskModal.submit）— add.wav
+- 部署：https://rpg-tracker-two.vercel.app
+
+## 2026-07-20 — UI 点击音效 v2：升级 Pixabay 音效
+
+- levelup/success 替换为 Pixabay CC0 音效（FunWithSound 制作）：
+  - levelup.mp3：Success Fanfare Trumpets（4.4s 铜管号角，118 万播放）
+  - success.mp3：Short Success Glockenspiel（2.5s 钢片琴清脆叮咚）
+- click/pop/unlock 保留 Kenney UI Audio (CC0) WAV
+- Pixabay 程序化下载被 Cloudflare Turnstile 阻挡，后续替换需手动浏览器操作
+- 部署：https://rpg-tracker-two.vercel.app
+
+## 2026-07-20 — UI 点击音效 v1
+
+- 新增 `useSound` hook（`frontend/src/hooks/useSound.js`），懒加载 Audio + 80ms 防抖
+- 音效文件来自 Kenney UI Audio (CC0)，放在 `frontend/public/sounds/`
+- 音效覆盖点：
+  - 升级特效 (`LevelUpEffect`) — levelup.wav
+  - 称号解锁 (`TitleUnlockEffect`) — unlock.wav
+  - 签到成功 (`DailyCheckin`) — success.wav
+  - 活动记录提交 (`ActivityForm`) — success.wav
+  - 徽章装备 (`BadgeGrid`) — pop.wav
+  - 周任务勾选 (`TaskItem`) — click.wav
+  - 侧栏导航/退出 (`Sidebar`) — pop.wav / click.wav
+- 部署：Vercel production — https://rpg-tracker-two.vercel.app
+
+## 2026-07-18 — 热力悬浮框修复 + 趋势数据一致性修复
+
+**问题 1 — 悬浮框位置偏移**：
+- 根因：Tooltip 在 `backdrop-blur-xl` 卡片内部渲染，`backdrop-filter` CSS 属性创建新的 fixed 定位容器，导致 `position: fixed` 相对于卡片而非视口
+- 修复：Tooltip 移到卡片 div 外面（`<>...</>` fragment），配合 `pageX/pageY` + `transform: translate(-50%, calc(-100% - 8px))` 定位在光标正上方
+
+**问题 2 — 年度热力与修炼趋势数据不匹配**：
+- 根因：`/stats/trends` 接口周任务 SQL 用 `week_start as date`，所有周任务 EXP 归到周一；而 `/stats/yearly-heatmap` 用 `week_start + weekday` 分散到每天
+- 修复：`SELECT date(week_start, '+' || weekday || ' days') as date`
+
+## 2026-07-18 — 年度热力图替换为独立 HTML 同款效果
+
+**问题**：项目内 YearHeatmap 用 CSS 变量 + div 布局，显示效果不如独立 HTML 版。
+
+**重写**：
+- 颜色从 CSS 变量改为硬编码主题色数组（`GRADS_DARK` / `GRADS_LIGHT`），通过 `useTheme` 切换
+- 渲染从 div 改为纯 SVG（`<rect>`），与独立 HTML 一致
+- 新增年份 ◀▶ 切换按钮
+- 新增四格统计行：年度总修为 / 修炼天数 / 当前连续 / 最长连续
+- 新增悬停 Tooltip（色块 + 日期 + EXP），`fixed` 定位跟随鼠标
+- 网格改为周日~周六（GitHub 惯例）
+
+## 2026-07-18 — 年度热力图重新设计（GitHub 风格）
+
+**问题**：亮色模式下刻度/边框不可见；原设计为"月份列 × 天数行"纵向布局，横轴混乱。
+
+**重做**：
+- 改为 GitHub 贡献图风格：7 行（周一至周日）× N 列（每周一列），每格 11×11px 小方块
+- 月份标签自动定位在对应列上方（间距不足时自动省略）
+- 左侧保留一/三/五/日 星期标注
+- 颜色从硬编码改为 CSS 变量（`--heatmap-empty` / `--heatmap-l1~l4` / `--heatmap-today-ring`），亮色模式自动切换
+- 深色：indigo 渐变；亮色：indigo 加深饱和度保证可读
+- 今日方块用 outline ring 标记
+- 横向溢出自动滚动
+
+## 2026-07-18 — 移动端主题切换 + 亮色模式修复
+
+**问题**：移动端主页面无主题切换入口；移动端亮色主题失效（MobileHome 硬编码 `bg-[#060610]` 不受 CSS 变量控制）；ActivityForm 两处 CSS 笔误 `border-cyan-500/[0.03]0`。
+
+**修复**：
+- MobileHome：`bg-[#060610]` → `bg-[var(--glass-bg)]`，顶部加主题切换按钮
+- ActivityForm：两处 `[0.03]0` → `/30`
+- 亮色模式下 bg/border 透明度提升（`0.03`→`0.04`、`0.04`→`0.06`），输入框边界更可见
+- 新增 `text-white`（无透明度后缀）亮色覆盖 → `#1c1917`
+- 新增 `focus:border-cyan-400/40` 亮色覆盖
+
+## 2026-07-18 — 全面分色 + GuidePage 主题适配 + CSS 变量重构
+
+**设计方向**：muted postal, monochromatic, card-based with layered elements
+
+**改动**：
+- 所有卡片改为 CSS 变量驱动（`:root` ↔ `[data-theme="light"]`），不再依赖 Tailwind 类覆盖
+- Dashboard 5 张卡片各独立 muted 色系：暖灰褐/钢蓝/靛蓝/紫罗兰/鼠尾草绿
+- GuidePage 9 个功能卡片各独立 muted 色系，暗→亮全适配
+- GuidePage 不再硬编码 `rgba(10,10,18,0.5)`，改用 CSS 变量自动响应主题切换
+- 浅色主题卡片：柔和粉彩色（樱草/长春花/蜜桃/玫瑰/薄荷/天蓝/杏色/粉红/薰衣草）
+
+---
+
+## 2026-07-18 — 卡片分色体系
+
+**改动**：
+- 5 个主页面卡片各自分配独立色系，不再统一使用 `bg-white/[0.03]`：
+  - **角色旁白**（DailyNarrative）→ 暖琥珀/玫红 `amber-950 → rose-950`
+  - **每日签到**（DailyCheckin）→ 青/墨绿 `cyan-950 → teal-950`
+  - **角色卡**（CharacterSheet）→ 靛蓝/石板 `indigo-950 → slate-900`
+  - **大脑雷达**（BrainRadar）→ 紫罗兰 `violet`
+  - **本周修炼**（WeekTaskPanel）→ 翡翠绿 `emerald-950 → green-950`
+- 卡片与背景对比度大幅提升（从 3% 透明度 → 40-50% 彩色透明度）
+- 浅色主题同步适配：深色渐变 → 柔和粉彩色（蜜桃/薄荷/长春花/鼠尾草绿）
+
+---
+
+## 2026-07-18 — 侧边栏对比度 + 浅色主题 v2
+
+**改动**：
+- 主题切换按钮移至 DayPhaseBar 同一行，与"白昼/晨光"阶段指示器并列
+- 浅色主题重设计：暖灰底色 `#e8e4de` 替代亮白，侧边栏 `#ddd8d1`，柔和层次分明
+- CSS 全局覆盖 50+ 组件样式：卡片(bg-white→bg-black)、文字(slate→深灰)、边框、强调色、滚动条
+- 不依赖逐个组件修改，一次覆盖全局适配
+
+---
+
+## 2026-07-18 — 侧边栏对比度 + 浅色主题
+
+**改动**：
+- 侧边栏底色与主内容区拉开差距：暗色模式侧边栏 `#010106`（更深黑）vs 主区 `#030308`
+- 新增米白色极简主题，`ThemeContext` 管理主题状态，localStorage 持久化
+- 右上角添加主题切换按钮（太阳/月亮图标）
+- CSS 变量双主题体系（`:root` 暗色 + `[data-theme="light"]` 米白）
+- 浅色主题配色：背景 `#faf8f5`，侧边栏 `#f0ede8`，强调色 `#0891b2`
+
+---
+
+## 2026-07-18 — DeepSeek 归类修正
+
+**改动**：
+- `ProfilePage.jsx`：DeepSeek V4 从"海外"组移到"国内"组，desc 从 "DeepSeek" 改为 "深度求索"
+- `GuidePage.jsx`：模型数量更新（海外 4 款、国内 6 款）
+- 重新构建并部署到 Vercel production
+
+---
+
 ## 2026-07-18 — 密钥泄露事故
 
 ### 事故经过

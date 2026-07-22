@@ -16,9 +16,9 @@ const defaultDimensions = [
 ];
 
 const tierColors = {
-  high: { stroke: '#00e5ff', fill: '#00b8ff', bg: 'rgba(99,102,241,0.08)', border: 'rgba(0,229,255,0.2)' },
-  mid: { stroke: '#a78bfa', fill: '#00d4ff', bg: 'rgba(139,92,246,0.06)', border: 'rgba(167,139,250,0.15)' },
-  low: { stroke: '#c4b5fd', fill: '#a78bfa', bg: 'rgba(167,139,250,0.04)', border: 'rgba(196,181,253,0.1)' },
+  high: { stroke: 'var(--radar-tier-high)', bg: 'var(--radar-tier-high-bg)', border: 'var(--radar-tier-high-border)' },
+  mid:  { stroke: 'var(--radar-tier-mid)',  bg: 'var(--radar-tier-mid-bg)',  border: 'var(--radar-tier-mid-border)' },
+  low:  { stroke: 'var(--radar-tier-low)',  bg: 'var(--radar-tier-low-bg)',  border: 'var(--radar-tier-low-border)' },
 };
 
 function getTier(score) {
@@ -34,17 +34,24 @@ function getTierLabel(tier) {
 }
 
 function getScoreColor(score) {
-  if (score >= 9) return '#00e5ff';
-  if (score >= 7) return '#a78bfa';
-  return '#c4b5fd';
+  if (score >= 9) return 'var(--radar-score-9)';
+  if (score >= 7) return 'var(--radar-score-7)';
+  return 'var(--radar-score-0)';
 }
 
-export default function BrainRadar({ compact, customDimensions }) {
+const MAX_NAME_LEN = 4;
+function shortName(name) {
+  return name && name.length > MAX_NAME_LEN ? name.slice(0, MAX_NAME_LEN) : name;
+}
+
+export default function BrainRadar({ compact, customDimensions, editable, onScoreChange }) {
   const [mounted, setMounted] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   useEffect(() => { setMounted(true); }, []);
 
   const hasCustom = customDimensions?.length;
-  const dims = hasCustom ? customDimensions : defaultDimensions;
+  const rawDims = hasCustom ? customDimensions : defaultDimensions;
+  const dims = rawDims.map(d => ({ ...d, name: shortName(d.name) }));
   const allZero = dims.every(d => d.score === 0);
   const tierGroups = { high: [], mid: [], low: [] };
   dims.forEach(d => tierGroups[getTier(d.score)].push(d));
@@ -58,27 +65,41 @@ export default function BrainRadar({ compact, customDimensions }) {
     <div
       className="rounded-2xl p-5 sm:p-6 relative"
       style={{
-        background: 'rgba(10,10,18,0.5)',
-        border: '1px solid rgba(255,255,255,0.06)',
+        background: 'var(--card-radar)',
+        borderColor: 'var(--card-radar-border)',
+        borderWidth: '1px',
+        borderStyle: 'solid',
         backdropFilter: 'blur(12px)',
       }}
     >
       <div className="text-center mb-4">
-        <h3 style={{
-          color: 'rgba(255,255,255,0.85)',
+        <h3 className="text-white/85" style={{
           fontSize: compact ? '0.9rem' : '1.1rem',
           fontWeight: 700,
         }}>
           我的大脑能力雷达图
         </h3>
-        <p style={{ color: '#64748b', fontSize: '0.75rem', marginTop: '0.2rem' }}>
+        <p style={{ color: 'var(--radar-dim-desc)', fontSize: '0.75rem', marginTop: '0.2rem' }}>
           {hasCustom ? 'AI 基于自我画像生成' : '基于自我实验绘制'}
+          {editable && (
+            <button
+              onClick={() => setEditMode(!editMode)}
+              className="ml-2 px-2 py-0.5 rounded text-[11px] border transition-all"
+              style={{
+                color: editMode ? 'var(--radar-tier-high)' : 'var(--radar-dim-desc)',
+                borderColor: editMode ? 'var(--radar-tier-high-border)' : 'var(--radar-dim-desc)',
+                background: editMode ? 'var(--radar-tier-high-bg)' : 'transparent',
+              }}
+            >
+              {editMode ? '完成' : '编辑'}
+            </button>
+          )}
         </p>
       </div>
 
       {/* Empty state overlay */}
       {allZero && (
-        <div className="absolute inset-0 flex items-center justify-center z-10 rounded-2xl" style={{ background: 'rgba(3,3,8,0.6)' }}>
+        <div className="absolute inset-0 flex items-center justify-center z-10 rounded-2xl bg-[var(--glass-bg)]/70">
           <div className="text-center px-6">
             <div className="w-16 h-16 rounded-full border-2 border-dashed border-white/[0.08] flex items-center justify-center mx-auto mb-3">
               <span className="text-2xl">🧠</span>
@@ -98,26 +119,27 @@ export default function BrainRadar({ compact, customDimensions }) {
             height={chartH}
             data={chartData}
             cx="50%" cy="50%" outerRadius={outerR}
+            margin={{ top: 12, right: 24, bottom: 12, left: 24 }}
             style={{ width: '100%', height: 'auto', maxWidth: '100%' }}
           >
-            <PolarGrid stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
+            <PolarGrid stroke="var(--radar-grid)" strokeDasharray="3 3" />
             <PolarAngleAxis
               dataKey="name"
-              tick={{ fill: '#94a3b8', fontSize: compact ? 9 : 12, fontWeight: 500 }}
+              tick={{ fill: 'var(--radar-axis-tick)', fontSize: compact ? 9 : 12, fontWeight: 500 }}
             />
             <PolarRadiusAxis
               angle={90}
               domain={[0, 10]}
-              tick={{ fill: '#475569', fontSize: compact ? 8 : 10 }}
+              tick={{ fill: 'var(--radar-radius-tick)', fontSize: compact ? 8 : 10 }}
               axisLine={false}
-              stroke="rgba(255,255,255,0.04)"
+              stroke="var(--radar-grid)"
             />
             <Radar
               name="自测得分"
               dataKey="score"
-              stroke="#00e5ff"
+              stroke="var(--radar-stroke)"
               strokeWidth={2}
-              fill="#00b8ff"
+              fill="var(--radar-stroke)"
               fillOpacity={0.18}
               animationDuration={1800}
               animationEasing="ease-in-out"
@@ -126,7 +148,8 @@ export default function BrainRadar({ compact, customDimensions }) {
         </div>
       ) : (
         <div className="flex items-center justify-center" style={{ height: chartH }}>
-          <div className="w-8 h-8 rounded-full border-2 border-cyan-400/30 border-t-cyan-400 animate-spin" />
+          <div className="w-8 h-8 rounded-full border-2 animate-spin"
+            style={{ borderColor: 'var(--radar-tier-high-border)', borderTopColor: 'var(--radar-tier-high)' }} />
         </div>
       )}
 
@@ -154,24 +177,43 @@ export default function BrainRadar({ compact, customDimensions }) {
                 }}
               >
                 <div className="flex justify-between mb-1">
-                  <span style={{ color: '#cbd5e1', fontSize: '0.75rem', fontWeight: 600 }}>{d.name}</span>
-                  <span style={{ color: getScoreColor(d.score), fontSize: '0.75rem', fontWeight: 700 }}>{d.score}</span>
+                  <span style={{ color: 'var(--radar-dim-name)', fontSize: '0.75rem', fontWeight: 600 }}>{d.name}</span>
+                  {editMode ? (
+                    <input
+                      type="number"
+                      value={d.score}
+                      onChange={e => {
+                        const newScore = parseFloat(e.target.value) || 0;
+                        const clamped = Math.min(10, Math.max(0, newScore));
+                        const idx = dims.findIndex(x => x.name === d.name);
+                        if (idx >= 0 && onScoreChange) {
+                          const newDims = dims.map((x, i) => i === idx ? { ...x, score: clamped } : x);
+                          onScoreChange(newDims);
+                        }
+                      }}
+                      min={0} max={10} step={0.1}
+                      className="w-12 bg-white/[0.06] border border-white/[0.1] rounded text-center text-xs outline-none transition-all"
+                      style={{ color: getScoreColor(d.score), fontWeight: 700 }}
+                    />
+                  ) : (
+                    <span style={{ color: getScoreColor(d.score), fontSize: '0.75rem', fontWeight: 700 }}>{d.score}</span>
+                  )}
                 </div>
                 <div
                   style={{
                     width: '100%', height: 4, borderRadius: 2,
-                    background: 'rgba(255,255,255,0.04)', marginBottom: '0.5rem',
+                    background: 'var(--radar-dim-bar-bg)', marginBottom: '0.5rem',
                     overflow: 'hidden',
                   }}
                 >
                   <div style={{
                     width: `${d.score * 10}%`, height: '100%',
-                    backgroundColor: getScoreColor(d.score), opacity: 0.35,
+                    backgroundColor: getScoreColor(d.score), opacity: 0.4,
                     transition: 'width 1s ease',
                   }} />
                 </div>
                 {!compact && (
-                  <p style={{ color: '#64748b', fontSize: '0.7rem', lineHeight: 1.4 }}>{d.desc}</p>
+                  <p style={{ color: 'var(--radar-dim-desc)', fontSize: '0.7rem', lineHeight: 1.4 }}>{d.desc}</p>
                 )}
               </div>
             ))}

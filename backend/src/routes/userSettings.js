@@ -141,7 +141,11 @@ ${dimensionsPrompt}
       return res.status(500).json({ error: 'AI 返回格式异常，请重试', raw: completion.slice(0, 200) });
     }
 
-    // Save radar scores
+    // Normalize returned names to ≤4 chars
+    scores = scores.map(s => ({
+      ...s,
+      name: s.name && s.name.length > 4 ? s.name.slice(0, 4) : s.name,
+    }));
     const existing = rowsToObjects(
       db.exec('SELECT user_id FROM user_settings WHERE user_id = ?', [req.userId])
     );

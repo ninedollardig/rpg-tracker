@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useCharacterContext } from '../../context/CharacterContext';
 import LevelBadge from './LevelBadge';
 import ExpBar from './ExpBar';
 import StatRow from './StatRow';
@@ -6,9 +7,11 @@ import StatBreakdown from './StatBreakdown';
 
 export default function CharacterSheet({ character, loading }) {
   const navigate = useNavigate();
+  const { triggerLevelUp } = useCharacterContext();
   if (loading || !character) {
     return (
-      <div className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 animate-pulse">
+      <div className="backdrop-blur-xl rounded-2xl p-6 animate-pulse border"
+        style={{ background: 'var(--card-character)', borderColor: 'var(--card-character-border)' }}>
         <div className="h-20 w-20 bg-white/[0.04] rounded-full mx-auto" />
         <div className="h-4 bg-white/[0.04] rounded mt-4 mx-auto w-24" />
         <div className="h-3 bg-white/[0.04] rounded mt-4" />
@@ -27,16 +30,18 @@ export default function CharacterSheet({ character, loading }) {
   ];
 
   return (
-    <div className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
+    <div className="backdrop-blur-xl rounded-2xl p-6 border"
+      style={{ background: 'var(--card-character)', borderColor: 'var(--card-character-border)' }}>
       {/* Level + equipped badge ornament */}
       <LevelBadge
         level={character.level}
         title={character.title}
         equippedBadge={character.equipped_badge || null}
+        onClick={triggerLevelUp}
       />
 
       <div className="text-center mt-1 mb-5">
-        <p className="text-base font-semibold text-white/70 tracking-wide">
+        <p className="text-base font-semibold text-indigo-100/80 tracking-wide">
           {character.name}
         </p>
       </div>

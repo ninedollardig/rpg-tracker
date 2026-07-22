@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { catClass } from './weekTaskConfig';
+import useSound from '../../hooks/useSound';
 
 export default function TaskItem({ task, onToggle, onUpdate, onDelete, mobile }) {
+  const { playSound } = useSound();
   const [editingScore, setEditingScore] = useState(false);
   const [editingContent, setEditingContent] = useState(false);
   const [editContent, setEditContent] = useState('');
@@ -29,7 +31,7 @@ export default function TaskItem({ task, onToggle, onUpdate, onDelete, mobile })
       }`}
     >
       <button
-        onClick={onToggle}
+        onClick={() => { playSound('click'); onToggle(); }}
         className={`shrink-0 w-3.5 h-3.5 rounded border flex items-center justify-center transition-all duration-200 ${
           task.completed
             ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-400'
@@ -84,7 +86,7 @@ export default function TaskItem({ task, onToggle, onUpdate, onDelete, mobile })
             <button
               key={n}
               type="button"
-              onClick={() => submitScore(n)}
+              onClick={() => { playSound('pop'); submitScore(n); }}
               className={`w-4 h-4 rounded text-[10px] font-semibold transition-colors ${
                 n <= task.score
                   ? 'bg-cyan-500/10 text-cyan-400'
@@ -113,7 +115,7 @@ export default function TaskItem({ task, onToggle, onUpdate, onDelete, mobile })
 
       <button
         type="button"
-        onClick={onDelete}
+        onClick={() => { playSound('click'); onDelete(); }}
         className="opacity-0 group-hover:opacity-100 text-slate-600 hover:text-rose-400 transition-all shrink-0"
       >
         <Trash2 size={11} />

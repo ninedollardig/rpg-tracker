@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Search, X } from 'lucide-react';
 import { catClass, CATEGORIES } from './weekTaskConfig';
+import useSound from '../../hooks/useSound';
 
 export default function AddTaskModal({ weekday, templates, onAdd, onClose }) {
+  const { playSound } = useSound();
   const [searchTerm, setSearchTerm] = useState('');
   const [customContent, setCustomContent] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -11,6 +13,7 @@ export default function AddTaskModal({ weekday, templates, onAdd, onClose }) {
   const [customCat, setCustomCat] = useState('');
 
   const selectTemplate = (t) => {
+    playSound('pop');
     setSelectedTemplate(t);
     setCustomContent(t.content);
     setScore(t.defaultScore);
@@ -30,6 +33,7 @@ export default function AddTaskModal({ weekday, templates, onAdd, onClose }) {
     if (!content) return;
     const category = selectedTemplate?.category || customCat;
     if (!category) return;
+    playSound('add');
     onAdd({ category, subcategory: selectedTemplate?.subcategory || '', content, score });
   };
 

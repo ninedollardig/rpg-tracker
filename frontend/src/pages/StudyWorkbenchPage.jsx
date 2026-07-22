@@ -94,8 +94,8 @@ export default function StudyWorkbenchPage() {
       </div>
 
       {/* Step panels */}
-      <div className="border border-white/[0.06] rounded-2xl p-6"
-        style={{ background: 'rgba(10,10,18,0.5)' }}>
+      <div className="border rounded-2xl p-6"
+        style={{ background: 'var(--card-study)', borderColor: 'var(--card-study-border)' }}>
         <h3 className="text-sm font-semibold text-white/70 mb-4 flex items-center gap-2">
           <ActiveIcon size={15} className="text-cyan-400" />
           {STEPS[stepIdx].label}

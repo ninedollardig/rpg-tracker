@@ -71,11 +71,17 @@ router.post('/', async (req, res) => {
 
   let baseExp = Math.round(at.default_exp_per_unit * value * streakMultiplier);
 
-  generateDailyQuests(db, req.userId);
-  generateWeeklyQuests(db, req.userId);
-
-  const questUpdates = updateQuestProgress(db, activity_type_id, value, logged_date, req.userId);
-  const completedQuests = questUpdates.filter(q => q.completed);
+  // Quest generation + progress — wrapped so they never block saveDb
+  let questUpdates = [];
+  let completedQuests = [];
+  try {
+    generateDailyQuests(db, req.userId);
+    generateWeeklyQuests(db, req.userId);
+    questUpdates = updateQuestProgress(db, activity_type_id, value, logged_date, req.userId);
+    completedQuests = questUpdates.filter(q => q.completed);
+  } catch (e) {
+    console.error('[activities] quest generation/progress failed:', e.message);
+  }
 
   if (completedQuests.length > 0) {
     baseExp = Math.round(baseExp * 1.5);
@@ -91,14 +97,19 @@ router.post('/', async (req, res) => {
 
   db.run('UPDATE character SET total_exp = total_exp + ?, updated_at = datetime(\'now\') WHERE user_id = ?', [expEarned, req.userId]);
 
+  // Level-up check — wrapped so it never blocks saveDb
   const charResult = rowsToObjects(db.exec('SELECT total_exp, level FROM character WHERE user_id = ?', [req.userId]));
   const char = charResult[0];
-  const progress = getLevelProgress(char.total_exp);
   let levelUp = null;
-  if (progress.level > char.level) {
-    const newTitle = getTitleForLevel(progress.level);
-    db.run('UPDATE character SET level = ?, title = ?, updated_at = datetime(\'now\') WHERE user_id = ?', [progress.level, newTitle, req.userId]);
-    levelUp = { from: char.level, to: progress.level, new_title: newTitle };
+  try {
+    const progress = getLevelProgress(char.total_exp);
+    if (progress.level > char.level) {
+      const newTitle = getTitleForLevel(progress.level);
+      db.run('UPDATE character SET level = ?, title = ?, updated_at = datetime(\'now\') WHERE user_id = ?', [progress.level, newTitle, req.userId]);
+      levelUp = { from: char.level, to: progress.level, new_title: newTitle };
+    }
+  } catch (e) {
+    console.error('[activities] level-up check failed:', e.message);
   }
 
   // Extended ops: achievements, titles — wrapped so they never block saveDb
@@ -111,6 +122,7 @@ router.post('/', async (req, res) => {
     console.error('[activities] checkAchievements/titles failed:', e.message);
   }
 
+  // Quest reward EXP — wrapped so it never blocks saveDb
   try {
     let questRewardExp = 0;
     for (const cq of completedQuests) {
@@ -133,6 +145,19 @@ router.post('/', async (req, res) => {
   }
   saveDb();
 
+  // Read back level-up info after save (may have been set inside try-catch)
+  let finalLevel = levelUp?.to;
+  let finalTotalExp = char.total_exp;
+  if (!finalLevel) {
+    try {
+      const charRecheck = rowsToObjects(db.exec('SELECT total_exp, level FROM character WHERE user_id = ?', [req.userId]));
+      if (charRecheck.length) {
+        finalTotalExp = charRecheck[0].total_exp;
+        finalLevel = charRecheck[0].level;
+      }
+    } catch (e) { /* ignore */ }
+  }
+
   const activity = rowsToObjects(
     db.exec('SELECT a.*, at.category, at.subcategory, at.name_zh, at.unit, at.icon FROM activities a JOIN activity_types at ON a.activity_type_id = at.id WHERE a.id = ?', [newActivityId])
   )[0];
@@ -151,7 +176,7 @@ router.post('/', async (req, res) => {
   syncAfterCreate({ ...activity, unit: at.unit });
   sendActivitySummary(
     { ...activity, unit: at.unit, exp_earned: expEarned },
-    { level: progress.level, total_exp: char.total_exp },
+    { level: finalLevel, total_exp: finalTotalExp },
     streak,
     levelUp,
     req.userId

@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
+import useSound from '../../hooks/useSound';
 
 const DURATION = 2500;
 
 export default function LevelUpEffect({ show, level, title, onDone }) {
+  const { playSound } = useSound();
+
   useEffect(() => {
     if (!show) return;
+    playSound('levelup');
     const timer = setTimeout(onDone, DURATION);
     return () => clearTimeout(timer);
   }, [show, onDone]);
